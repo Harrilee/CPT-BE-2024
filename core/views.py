@@ -17,14 +17,13 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 def info(request):
     try:
         # temporary decoder here, simple_jwt requires "id" and "exp"
-        token = request.headers['Authorization'][7:]
+        token = request.headers['Authorization']
         decoded = jwt.decode(token, SECRET_KEY, algorithms="HS256")
         print(decoded)
         if "name" not in decoded or "sub" not in decoded:
-            return Response({"error": "Missing required claim name or sub"}, status=status.HTTP_400_BAD_REQUEST) 
-        name = decoded["name"]
+            return Response({"error": "Missing required claim name or sub"}, status=status.HTTP_400_BAD_REQUEST)
         sub = decoded["sub"]
-        webUser = WebUser.objects.get(sub=sub, name=name)
+        webUser = WebUser.objects.get(id=sub)
         serializer = WebUserSerializer(webUser, context={"info": True})
         if request.method == "GET":
             return Response(serializer.data, status=status.HTTP_200_OK)
