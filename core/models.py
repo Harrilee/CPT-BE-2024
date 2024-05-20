@@ -12,6 +12,16 @@ class WebUser(models.Model):
 
     banFlag = models.BooleanField(default=False, help_text="This field is managed by automatic rules which cannot be changed by admin")
 
+    freeWriting = models.JSONField(blank=True)
+    challengeWriting1 = models.JSONField(blank=True)
+    challengeWriting2 = models.JSONField(blank=True)
+    challengeWriting3 = models.JSONField(blank=True)
+    virtualLetter = models.JSONField(blank=True)
+    
+    feedback6 = models.JSONField(blank=True)
+    feedback8 = models.JSONField(blank=True)
+    
+    
     def __str__(self):
         return f'{self.sub} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
 
