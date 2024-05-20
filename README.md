@@ -9,6 +9,7 @@ DB_USER=<database_username>
 DB_PASSWORD=<database_password>
 DB_HOST=<database_host>
 DB_PORT=3306 || <database_port>
+CORS_ALLOWED_ORIGINS=<comma-separated_origions>
 ```
 
 ```bash
