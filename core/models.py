@@ -18,9 +18,6 @@ class WebUser(models.Model):
     challengeWriting3 = models.JSONField(blank=True)
     virtualLetter = models.JSONField(blank=True)
     
-    feedback6 = models.JSONField(blank=True)
-    feedback8 = models.JSONField(blank=True)
-    
     
     def __str__(self):
         return f'{self.sub} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
