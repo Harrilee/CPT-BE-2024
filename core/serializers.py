@@ -6,7 +6,7 @@ class WebUserSerializer(serializers.ModelSerializer):
         model = WebUser
         fields = '__all__'
         
-    def __init__(self, user, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         if 'context' in kwargs:
@@ -18,8 +18,6 @@ class WebUserSerializer(serializers.ModelSerializer):
                     self.fields.pop(field)
 
             if kwargs['context'].get('writing'):
-                writing_field = getattr(user, kwargs['feild_name'], None)
-
-                for field in set(self.fields) - set(writing_field):
+                for field in set(self.fields) - set([kwargs['context']['field_name']]):
                     self.fields.pop(field)
-                    
+            
