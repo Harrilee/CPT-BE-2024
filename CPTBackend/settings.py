@@ -34,7 +34,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 #
-CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',')
+
+CORS_ALLOW_ALL_ORIGINS = True
+# CORS_ALLOWED_ORIGINS = [
+#     'https://5bc8-2620-0-e00-4037-00-5.ngrok-free.app',  # Replace with your actual Ngrok URL
+#     'http://localhost:3000',  # If you are testing locally
+# ]
+
+# CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',

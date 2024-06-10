@@ -51,10 +51,10 @@ def writing(request, day):
         if request.method == "GET":
             if day > webUser.currentDay:
                 return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-            # todo: 对应每一天的参考答案
-            if day != 1:
-                with open("writings/challenge_writing_sample.json", "r") as f:
+            if day in [4, 5]:
+                with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
                     reference = json.load(f)
+            #todo: day 6 auto feedback
             else: reference = None
             answer = getattr(webUser, field_map[day], None)
             if not answer:
