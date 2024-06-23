@@ -18,6 +18,11 @@ class WebUser(models.Model):
     challengeWriting3 = models.JSONField(default=dict, null=True, blank=True)
     virtualLetter = models.JSONField(default=dict, null=True, blank=True)
     
+    game = models.BinaryField(null=True)
+    gameBreakFlag = models.BooleanField(default=False)
+    gameFinished = models.BooleanField(default=False)
+    gameData = models.JSONField(default=dict,null=True, blank=True)
+    
     def __str__(self):
         return f'{self.id} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
 
