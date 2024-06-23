@@ -51,7 +51,7 @@ def writing(request, day):
         if request.method == "GET":
             if day == 6: prompt = webUser.freeWriting
             else: prompt = None
-            if day > webUser.currentDay:
+            if day > int(webUser.currentDay)+1:
                 return Response({"error": f"Current progress has not reach day {day}", 'prompt': prompt}, status=status.HTTP_400_BAD_REQUEST)
             if day in [4, 5]:
                 with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
