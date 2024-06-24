@@ -8,6 +8,7 @@ from .models import WebUser
 from .serializers import WebUserSerializer
 from .utility import jwt_required
 import json
+from core.services.gameInit import *
 
 # Create your views here.
  
@@ -77,3 +78,11 @@ def writing(request, day):
         return Response({"error": "Invalid day for writing"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    
+@api_view(['POST'])
+@jwt_required
+def game(request):
+    # if use phonenumber, need encryption in the future
+    sub = request.decoded["sub"]
+    return getNewGame(sub).handleRequest(request)

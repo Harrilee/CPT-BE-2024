@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import pickle
-from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework import status
 
 from core.models import WebUser
 from core.services.parser import get_scenario_list
@@ -29,12 +30,12 @@ def initializeGame(user: WebUser) -> MiniGame:
 
 
 
-def getNewGame(phoneNumber: str) -> MiniGame|JsonResponse:
+def getNewGame(sub: str) -> MiniGame|Response:
     try:
-        webUser = WebUser.objects.get(phone_number=phoneNumber)
+        webUser = WebUser.objects.get(id=sub)
     except WebUser.DoesNotExist:
         print("User does not exist")
-        return JsonResponse({'error': '用户不存在'})
+        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
     # print('currentDay', webUser.currentDay)
     # check if game is initialized in web user
