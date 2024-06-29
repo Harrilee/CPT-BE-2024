@@ -34,6 +34,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 #
+
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',')
 
 INSTALLED_APPS = [

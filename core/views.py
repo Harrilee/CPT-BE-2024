@@ -49,17 +49,18 @@ def writing(request, day):
         sub = request.decoded["sub"]
         webUser = WebUser.objects.get(id=sub)
         if request.method == "GET":
-            if day > webUser.currentDay:
-                return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-            # todo: 对应每一天的参考答案
-            if day != 1:
-                with open("writings/challenge_writing_sample.json", "r") as f:
+            if day == 6: prompt = webUser.freeWriting
+            else: prompt = None
+            if day > int(webUser.currentDay)+1:
+                return Response({"error": f"Current progress has not reach day {day}", 'prompt': prompt}, status=status.HTTP_400_BAD_REQUEST)
+            if day in [4, 5]:
+                with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
                     reference = json.load(f)
             else: reference = None
             answer = getattr(webUser, field_map[day], None)
             if not answer:
-                return Response({"error": "Past content does not exist"}, status=status.HTTP_404_NOT_FOUND)
-            return Response({'answer': answer, 'reference': reference}, status=status.HTTP_200_OK)
+                return Response({"error": "Past content does not exist", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'answer': answer, 'reference': reference, 'prompt': prompt}, status=status.HTTP_200_OK)
         if request.method == "POST":
             if day > int(webUser.currentDay) + 1:
                 return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
