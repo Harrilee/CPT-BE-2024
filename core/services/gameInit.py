@@ -13,7 +13,7 @@ def initializeGame(user: WebUser) -> MiniGame:
 
     scenario_list = get_scenario_list()
     patient_names = []
-    scenario_list[0].start_sentence = "欢迎来到菜鸟咨询师小游戏！在这个游戏里，您将扮演一名心理咨询专业的大一学生，在导师的带领下，为十六位性少数男性来访者解决他们的困扰。让我们开始吧!"
+    scenario_list[0].start_sentence = "你好，我是你这节实践课的导师。我是一名彩虹友善心理咨询师，取向为认知–行为疗法。很高兴认识你！我们来与第一位来访者连线吧！"
     for i in range(len(scenario_list) - 1):
         scenario_list[i].set_next_node(scenario_list[i + 1])
 
@@ -21,8 +21,7 @@ def initializeGame(user: WebUser) -> MiniGame:
 
     for scenario in scenario_list:
         patient_names.append(scenario.name)
-
-
+        
     game = MiniGame(start_sentence,user,patient_names)
     return game
 
@@ -30,17 +29,19 @@ def initializeGame(user: WebUser) -> MiniGame:
 
 
 
-def getNewGame(sub: str) -> MiniGame|Response:
+def getNewGame(user: str) -> MiniGame|Response:
     try:
-        webUser = WebUser.objects.get(id=sub)
+        webUser = WebUser.objects.get(user=user)
     except WebUser.DoesNotExist:
         print("User does not exist")
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
     # print('currentDay', webUser.currentDay)
+    if int(webUser.currentDay) < 1:
+        return Response({"error": f"Current progress has not reach day 2"}, status=status.HTTP_400_BAD_REQUEST)
     # check if game is initialized in web user
     if webUser.game is None:
-        print("Game not initialized")
+        # print("Game not initialized")
         game = initializeGame(webUser)
         # use pickle serialization for game
         pickle_game = pickle.dumps(game)
@@ -48,8 +49,9 @@ def getNewGame(sub: str) -> MiniGame|Response:
         webUser.save()
         return game
     else:
-        print("Game already initialized")
+        # print("Game already initialized")
         game = pickle.loads(webUser.game)
         game.user = webUser
         return game
+
 

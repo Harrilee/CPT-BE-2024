@@ -396,7 +396,7 @@ class Scenario(Node):
 
 
 class MiniGame(Node):
-    start_sentence = "你好，我是你这节实践课的导师。我是一名彩虹友善心理咨询师，取向为认知–行为疗法。很高兴认识你！我们来与第一位来访者连线吧！"
+    start_sentence = "欢迎来到菜鸟咨询师小游戏！在这个游戏里，您将扮演一名心理咨询专业的大一学生，在导师的带领下，为十六位性少数男性来访者解决他们的困扰。让我们开始吧!"
 
     def __init__(self, current_node: Node, user: WebUser, name_list: List[str]):
         self.current_node = current_node
@@ -451,7 +451,7 @@ class MiniGame(Node):
                     SupervisorTextResponse('今天辛苦啦，您的游戏进度已经保存。您可以在明天继续游戏。'))
                 pickle_game = pickle.dumps(self)
                 self.user.game = pickle_game
-                self.user.currentDay = 5
+                self.user.currentDay = 3
                 self.user.save()
                 break
             node = self.current_node.consume(self, request)
@@ -461,9 +461,9 @@ class MiniGame(Node):
                 self.user.gameFinished = True
                 pickle_game = pickle.dumps(self)
                 self.user.game = pickle_game
-                self.user.currentDay = 6
+                self.user.currentDay = 4
                 self.user.save()
-                self.user.validity_check()
+                # self.user.validity_check()
                 break
 
             if not isinstance(node, WaitingForInput):

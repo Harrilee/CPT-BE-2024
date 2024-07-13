@@ -1,0 +1,379 @@
+ERROR 2024-07-01 09:12:03,892 views An error occurred: 'NoneType' object does not support item assignment
+Traceback (most recent call last):
+  File "/Users/lyy/Desktop/CPT_9/CPTBackend/core/views.py", line 92, in game
+    return getNewGame(sub).handleRequest(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPTBackend/core/services/gameModel.py", line 457, in handleRequest
+    node = self.current_node.consume(self, request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPTBackend/core/services/gameModel.py", line 301, in consume
+    game.user.gameData[str(self.true_id) + '-' + self.thought_content] = user_choice
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object does not support item assignment
+ERROR 2024-07-01 09:12:03,893 log Internal Server Error: /game
+ERROR 2024-07-01 09:12:03,894 basehttp "POST /game HTTP/1.1" 500 36
+ERROR 2024-07-03 15:44:23,676 views An error occurred: 'WebUser' object has no attribute 'validity_check'
+Traceback (most recent call last):
+  File "/Users/lyy/Desktop/CPT_9/CPTBackend/core/views.py", line 92, in game
+    return getNewGame(sub).handleRequest(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPTBackend/core/services/gameModel.py", line 466, in handleRequest
+    self.user.validity_check()
+    ^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'WebUser' object has no attribute 'validity_check'
+ERROR 2024-07-03 15:44:23,680 log Internal Server Error: /game
+ERROR 2024-07-03 15:44:23,681 basehttp "POST /game HTTP/1.1" 500 36
+ERROR 2024-07-10 15:35:11,666 log Internal Server Error: /info
+ERROR 2024-07-10 15:35:11,666 basehttp "GET /info HTTP/1.1" 500 93
+ERROR 2024-07-10 15:44:52,424 log Internal Server Error: /info
+ERROR 2024-07-10 15:44:52,425 basehttp "GET /info HTTP/1.1" 500 93
+ERROR 2024-07-10 15:46:10,809 log Internal Server Error: /info
+ERROR 2024-07-10 15:46:10,810 basehttp "GET /info HTTP/1.1" 500 93
+ERROR 2024-07-11 02:40:17,252 log Internal Server Error: /info
+ERROR 2024-07-11 02:40:17,252 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:41:05,613 log Internal Server Error: /info
+ERROR 2024-07-11 02:41:05,613 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:42:54,354 log Internal Server Error: /info
+ERROR 2024-07-11 02:42:54,355 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:44:02,676 log Internal Server Error: /info
+ERROR 2024-07-11 02:44:02,676 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:44:45,730 log Internal Server Error: /info
+ERROR 2024-07-11 02:44:45,731 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:45:42,885 log Internal Server Error: /info
+ERROR 2024-07-11 02:45:42,885 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 02:45:42,897 log Internal Server Error: /info
+ERROR 2024-07-11 02:45:42,897 basehttp "GET /info HTTP/1.1" 500 76
+ERROR 2024-07-11 03:53:51,600 log Internal Server Error: /login
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 169, in login
+    phoneNumber = json.loads(request.body)['phoneNumber']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+ERROR 2024-07-11 03:53:51,603 basehttp "POST /login HTTP/1.1" 500 103684
+ERROR 2024-07-11 03:54:21,412 log Internal Server Error: /login
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 169, in login
+    phoneNumber = json.loads(request.body)['phoneNumber']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+ERROR 2024-07-11 03:54:21,413 basehttp "POST /login?phoneNumber=17688549080&passcode=9500 HTTP/1.1" 500 104664
+ERROR 2024-07-11 03:55:37,755 log Internal Server Error: /login
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 169, in login
+    phoneNumber = json.loads(request.body)['phoneNumber']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+ERROR 2024-07-11 03:55:37,757 basehttp "POST /login HTTP/1.1" 500 104265
+ERROR 2024-07-11 03:56:39,005 log Internal Server Error: /login
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 169, in login
+    phoneNumber = json.loads(request.body)['phoneNumber']
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/json/decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+ERROR 2024-07-11 03:56:39,007 basehttp "POST /login HTTP/1.1" 500 104839
+ERROR 2024-07-11 03:59:41,548 log Internal Server Error: /info
+ERROR 2024-07-11 03:59:41,550 basehttp "GET /info HTTP/1.1" 500 55
+ERROR 2024-07-11 04:00:54,299 log Internal Server Error: /info
+ERROR 2024-07-11 04:00:54,300 basehttp "GET /info HTTP/1.1" 500 55
+ERROR 2024-07-11 05:05:34,552 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 148, in handleSendSMSRequest
+    webUser = WebUser.objects.get(phoneNumber=phoneNumber)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/query.py", line 650, in get
+    raise self.model.DoesNotExist(
+core.models.WebUser.DoesNotExist: WebUser matching query does not exist.
+ERROR 2024-07-11 05:05:34,554 basehttp "POST /sms HTTP/1.1" 500 103735
+ERROR 2024-07-11 05:06:32,964 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 148, in handleSendSMSRequest
+    webUser = WebUser.objects.get(phoneNumber=phoneNumber)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/query.py", line 650, in get
+    raise self.model.DoesNotExist(
+core.models.WebUser.DoesNotExist: WebUser matching query does not exist.
+ERROR 2024-07-11 05:06:32,965 basehttp "POST /sms HTTP/1.1" 500 103735
+ERROR 2024-07-11 05:07:51,984 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 148, in handleSendSMSRequest
+    webUser = WebUser.objects.get(phoneNumber=phoneNumber)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/query.py", line 650, in get
+    raise self.model.DoesNotExist(
+core.models.WebUser.DoesNotExist: WebUser matching query does not exist.
+ERROR 2024-07-11 05:07:51,985 basehttp "POST /sms HTTP/1.1" 500 103735
+ERROR 2024-07-11 05:08:20,148 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 148, in handleSendSMSRequest
+    webUser = WebUser.objects.get(phoneNumber=phoneNumber)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/query.py", line 650, in get
+    raise self.model.DoesNotExist(
+core.models.WebUser.DoesNotExist: WebUser matching query does not exist.
+ERROR 2024-07-11 05:08:20,150 basehttp "POST /sms HTTP/1.1" 500 103735
+ERROR 2024-07-13 07:46:05,438 log Internal Server Error: /writing/8
+ERROR 2024-07-13 07:46:05,439 basehttp "GET /writing/8 HTTP/1.1" 500 89
+ERROR 2024-07-13 07:46:16,637 log Internal Server Error: /writing/8
+ERROR 2024-07-13 07:46:16,637 basehttp "GET /writing/8 HTTP/1.1" 500 89
+ERROR 2024-07-13 07:46:32,631 log Internal Server Error: /writing/8
+ERROR 2024-07-13 07:46:32,632 basehttp "GET /writing/8 HTTP/1.1" 500 89
+ERROR 2024-07-13 12:19:34,516 log Internal Server Error: /writing/9
+ERROR 2024-07-13 12:19:34,518 basehttp "GET /writing/9 HTTP/1.1" 500 89
+ERROR 2024-07-13 12:19:38,200 log Internal Server Error: /writing/7
+ERROR 2024-07-13 12:19:38,200 basehttp "GET /writing/7 HTTP/1.1" 500 89
+ERROR 2024-07-13 12:20:29,328 log Internal Server Error: /writing/7
+ERROR 2024-07-13 12:20:29,329 basehttp "GET /writing/7 HTTP/1.1" 500 89
+ERROR 2024-07-13 12:21:45,351 views An error occurred: cannot access local variable 'prompt' where it is not associated with a value
+Traceback (most recent call last):
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 65, in writing
+    return Response({"error": f"Current progress has not reach day {day}", 'prompt': prompt}, status=status.HTTP_400_BAD_REQUEST)
+                                                                                     ^^^^^^
+UnboundLocalError: cannot access local variable 'prompt' where it is not associated with a value
+ERROR 2024-07-13 12:21:45,352 log Internal Server Error: /writing/7
+ERROR 2024-07-13 12:21:45,352 basehttp "GET /writing/7 HTTP/1.1" 500 46
+ERROR 2024-07-13 14:16:08,215 log Internal Server Error: /info
+ERROR 2024-07-13 14:16:08,216 basehttp "GET /info HTTP/1.1" 500 79

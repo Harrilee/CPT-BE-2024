@@ -12,7 +12,8 @@ class WebUserSerializer(serializers.ModelSerializer):
         if 'context' in kwargs:
             if kwargs['context'].get('info'):
                 info_fields = [
-                    'group', 'currentDay', 'startDate', 'banFlag',
+                    'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'feedback6', 'feedback8',
+                    'challengeWriting1Viewed', 'challengeWriting2Viewed', 'feedback6Viewed', 'feedback8Viewed'
                 ]
                 for field in set(self.fields) - set(info_fields):
                     self.fields.pop(field)

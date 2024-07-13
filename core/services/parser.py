@@ -18,7 +18,7 @@ def generate_random_display_id(num: int) -> List[int]:
 def get_scenario_list():
 
 
-    wb_obj = openpyxl.load_workbook(os.path.join(settings.BASE_DIR, 'polls', 'services', 'content.xlsx'))
+    wb_obj = openpyxl.load_workbook(os.path.join(settings.BASE_DIR, 'core', 'services', 'content.xlsx'))
 
     sheet_obj = wb_obj.active
 
