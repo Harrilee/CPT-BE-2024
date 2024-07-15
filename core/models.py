@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 
@@ -9,13 +10,10 @@ class WebUser(models.Model):
     bludId = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uid")
     sms = models.CharField(null=True, blank=True, default=0, max_length=20)
     phoneNumber = models.CharField(max_length=200, help_text="Phone number")
-    
-    # id = models.CharField(max_length=200, help_text="Test only auth sub claim", primary_key=True)
-    name = models.CharField(max_length=200, help_text="Test only auth name claim")
-    
+
     group = models.TextField(choices=[("Exp", "Exp"), ("Waitlist", "Waitlist")], default="Exp")
-    currentDay = models.FloatField(default=0, help_text="User task progress - note that this number might be a float")
-    startDate = models.DateField(null=True, blank=True, help_text="Experiment start date")
+    currentDay = models.FloatField(default=1, help_text="User task progress - note that this number might be a float")
+    startDate = models.DateField(default=timezone.now, help_text="Experiment start date")
 
     banFlag = models.BooleanField(default=False, help_text="This field is managed by automatic rules which cannot be changed by admin")
     banReason = models.TextField(max_length=200, null=True, blank=True, help_text="Reason for banning user, visible to user")

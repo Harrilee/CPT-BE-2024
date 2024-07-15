@@ -36,8 +36,7 @@ def getNewGame(user: str) -> MiniGame|Response:
         print("User does not exist")
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
-    # print('currentDay', webUser.currentDay)
-    if int(webUser.currentDay) < 1:
+    if webUser.currentDay < 2:
         return Response({"error": f"Current progress has not reach day 2"}, status=status.HTTP_400_BAD_REQUEST)
     # check if game is initialized in web user
     if webUser.game is None:

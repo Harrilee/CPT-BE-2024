@@ -32,9 +32,14 @@ def info(request):
         if request.method == "GET":
             return Response(serializer.data, status=status.HTTP_200_OK)
         if request.method == "POST":
-            serializer = WebUserSerializer(webUser, data=request.data, partial=True) 
+            mutable_data = request.data.copy()
+            if request.data.get("feedback6Viewed"):
+                mutable_data['currentDay'] = max(webUser.currentDay, 8)
+            elif request.data.get("feedback8Viewed"):
+                mutable_data['currentDay'] = max(webUser.currentDay, 10)
+            serializer = WebUserSerializer(webUser, data=mutable_data, partial=True) 
             if serializer.is_valid():
-                serializer.save()
+                web = serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST) 
@@ -53,44 +58,34 @@ def writing(request, day):
         4: 'challengeWriting1',
         5: 'challengeWriting2',
         6: 'challengeWriting3',
-        7: 'feedback6',
         8: 'virtualLetter',
-        9: 'feedback8'
     }
     try:
         user = request.user
         webUser = WebUser.objects.get(user=user)
         if request.method == "GET":
-            if day > int(webUser.currentDay)+1:
+            if day > webUser.currentDay:
                 return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-
-            if day in [7, 9]:
-                feedback = getattr(webUser, field_map[day], "Feedback is not ready")
-                return Response(feedback, status=status.HTTP_200_OK)
-                
-            else:
-                if day == 6: prompt = webUser.freeWriting
-                else: prompt = None
-                if day in [4, 5]:
-                    with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
-                        reference = json.load(f)
-                else: reference = None
-                answer = getattr(webUser, field_map[day], None)
-                if not answer:
-                    return Response({"error": "Past content does not exist", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
-                webUser.currentDay = max(day, webUser.currentDay)
-                webUser.save()
-                print(webUser.currentDay)
-                return Response({'answer': answer, 'reference': reference, 'prompt': prompt}, status=status.HTTP_200_OK)
+            if day == 6: prompt = webUser.freeWriting
+            else: prompt = None
+            if day in [4, 5]:
+                with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
+                    reference = json.load(f)
+            else: reference = None
+            answer = getattr(webUser, field_map[day], None)
+            if not answer:
+                return Response({"error": "Past content does not exist", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
+            # webUser.currentDay = max(day, webUser.currentDay)
+            # webUser.save()
+            # print(webUser.currentDay)
+            return Response({'answer': answer, 'reference': reference, 'prompt': prompt}, status=status.HTTP_200_OK)
         if request.method == "POST":
-            if day > int(webUser.currentDay) + 1:
+            if day > webUser.currentDay:
                 return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-            if day in [7, 9]:
-                return Response({"error": f"Day {day} does not support POST"}, status=status.HTTP_400_BAD_REQUEST)
             writing_field = getattr(webUser, field_map[day], None)
             if writing_field:
                 return Response({"error": "The content for this writing task exists", "exist": True}, status=status.HTTP_400_BAD_REQUEST)
-            webUser.currentDay = day
+            webUser.currentDay = day+1
             setattr(webUser, field_map[day], request.data)
             webUser.save()
             return Response(status=status.HTTP_200_OK)
@@ -122,9 +117,8 @@ def finishVideo(request):
     try:
         user = request.user
         webUser = WebUser.objects.get(user=user)
-        webUser.currentDay = max(2, webUser.currentDay)
+        webUser.currentDay = max(2.1, webUser.currentDay)
         webUser.save()
-        print(webUser.currentDay)
         return Response(status=status.HTTP_200_OK)
     except WebUser.DoesNotExist:
         return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
