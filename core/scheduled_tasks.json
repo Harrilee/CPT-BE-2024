@@ -1,0 +1,119 @@
+[
+    {
+        "task_no": [1.1],
+        "groups": ["Exp"],
+        "days": [0],
+        "time": "20",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_462050906",
+        "_note": "任务开始短信-仅实验组"
+    },
+    {
+        "task_no": [1.2],
+        "groups": ["Waitlist"],
+        "days": [0],
+        "time": "20",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_462050906",
+        "_note": "任务开始短信-对照组"
+    },
+    {
+        "task_no": [2.1],
+        "groups": ["Exp"],
+        "days": [2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "8",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_462050908",
+        "_note": "每日任务开启短信-仅实验组"
+    },
+    {
+        "task_no": [2.2],
+        "groups": ["Exp", "Waitlist"],
+        "days": [2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "8",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_462050908",
+        "_note": "每日任务开启短信-所有人"
+    },
+    {
+        "task_no": [3.1],
+        "groups": ["Exp"],
+        "days": [2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "20",
+        "criteria": ["not_banned", "task_not_done"],
+        "template_code": "SMS_461960894",
+        "_note": "当日未完成提醒短信-仅实验组"
+    },
+    {
+        "task_no": [3.2],
+        "groups": ["Exp", "Waitlist"],
+        "days": [1],
+        "time": "20",
+        "criteria": ["not_banned", "task_not_done"],
+        "template_code": "SMS_461960894",
+        "_note": "当日未完成提醒短信-所有人"
+    },
+    {
+        "task_no": [4],
+        "groups": ["Exp"],
+        "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "20",
+        "criteria": ["not_banned", "has_unsent_quality_check_fail_msg"],
+        "template_code": "SMS_462035886",
+        "_note": "低质量写作提醒短信-仅实验组"
+    },
+    {
+        "task_no": [5],
+        "groups": ["Exp", "Waitlist"],
+        "days": [22],
+        "time": "20",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_461960895",
+        "_note": "第一次后续调查Day23参与提示短信"
+    },
+    {
+        "task_no": [6],
+        "groups": ["Exp", "Waitlist"],
+        "days": [38],
+        "time": "20",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_461960895",
+        "_note": "第二次后续调查Day39参与提示短信"
+    },
+    {
+        "task_no": [7],
+        "groups": ["Exp", "Waitlist"],
+        "days": [98],
+        "time": "20",
+        "criteria": ["not_banned"],
+        "template_code": "SMS_461960895",
+        "_note": "第三次后续调查Day99参与提示短信"
+    },
+    {
+        "task_no": [8.1],
+        "groups": ["Exp", "Waitlist"],
+        "days": [23, 39, 99],
+        "time": "20",
+        "criteria": ["not_banned", "task_not_done"],
+        "template_code": "SMS_462035886",
+        "_note": "后续调查未完成提醒-当日晚8点"
+    },
+    {
+        "task_no": [8.2],
+        "groups": ["Exp", "Waitlist"],
+        "days": [24, 40, 100],
+        "time": "8",
+        "criteria": ["not_banned", "task_not_done"],
+        "template_code": "SMS_462035886",
+        "_note": "后续调查未完成提醒-次日早八点"
+    },
+    {
+        "task_no": [8.3],
+        "groups": ["Exp", "Waitlist"],
+        "days": [25, 41, 101],
+        "time": "8",
+        "criteria": ["not_banned", "task_not_done"],
+        "template_code": "SMS_462035886",
+        "_note": "后续调查未完成提醒-第三日早八点"
+    }
+]

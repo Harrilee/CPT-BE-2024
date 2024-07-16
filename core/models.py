@@ -51,6 +51,10 @@ class WebUser(models.Model):
         self.score = 0
         self.save()
         
+    #TODO
+    def validity_check(self):
+        
+        return True
 
 class Whitelist(models.Model):
     
@@ -58,3 +62,13 @@ class Whitelist(models.Model):
 
     def __str__(self):
         return self.phoneNumber
+    
+    
+class Log(models.Model):
+    
+    time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE, null=True, blank=True)
+    log = models.TextField()
+
+    def __str__(self) -> str:
+        return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.log}'
