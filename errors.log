@@ -377,3 +377,244 @@ ERROR 2024-07-13 12:21:45,352 log Internal Server Error: /writing/7
 ERROR 2024-07-13 12:21:45,352 basehttp "GET /writing/7 HTTP/1.1" 500 46
 ERROR 2024-07-13 14:16:08,215 log Internal Server Error: /info
 ERROR 2024-07-13 14:16:08,216 basehttp "GET /info HTTP/1.1" 500 79
+ERROR 2024-07-16 14:12:36,446 log Internal Server Error: /admin/core/whitelist/add/
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/options.py", line 686, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/utils/decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/cache.py", line 62, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/sites.py", line 242, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/options.py", line 1890, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/utils/decorators.py", line 46, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/utils/decorators.py", line 133, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/options.py", line 1750, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/options.py", line 1808, in _changeform_view
+    self.log_addition(request, new_object, change_message)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/admin/options.py", line 924, in log_addition
+    object_repr=str(obj),
+                ^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/models.py", line 60, in __str__
+    return self.encrypted_phone_number
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Whitelist' object has no attribute 'encrypted_phone_number'
+ERROR 2024-07-16 14:12:36,448 basehttp "POST /admin/core/whitelist/add/ HTTP/1.1" 500 112679
+ERROR 2024-07-16 14:17:03,546 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 135, in handleSendSMSRequest
+    encryptedPhoneNumber = Whitelist.objects.get(phoneNumber=encryptPhoneNumber(phoneNumber))
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/utility.py", line 51, in encryptPhoneNumber
+    usernameInt -= usernameEncryptionSalt
+TypeError: unsupported operand type(s) for -=: 'int' and 'str'
+ERROR 2024-07-16 14:17:03,549 basehttp "POST /sms HTTP/1.1" 500 97491
+ERROR 2024-07-16 14:17:50,284 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 135, in handleSendSMSRequest
+    encryptedPhoneNumber = Whitelist.objects.get(phoneNumber=encryptPhoneNumber(phoneNumber))
+                                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/utility.py", line 51, in encryptPhoneNumber
+    usernameInt = int(phoneNumber) - 10000000000
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: unsupported operand type(s) for -=: 'int' and 'str'
+ERROR 2024-07-16 14:17:50,286 basehttp "POST /sms HTTP/1.1" 500 97518
+ERROR 2024-07-16 14:18:59,159 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 137, in handleSendSMSRequest
+    response = SMS.SmsService.send(phoneNumber, generated_passcode)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/services/SMS.py", line 89, in send
+    return client.call_api(params, request, runtime)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/alibabacloud_tea_openapi/client.py", line 1751, in call_api
+    return self.do_request(params, request, runtime)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/alibabacloud_tea_openapi/client.py", line 1288, in do_request
+    raise UnretryableException(_last_request, _last_exception)
+Tea.exceptions.UnretryableException: HTTPSConnectionPool(host='dysmsapi.aliyuncs.com', port=443): Max retries exceeded with url: /?PhoneNumbers=17688549080&SignName=%E4%B8%8A%E7%BA%BD%E5%A4%A7%E5%8E%8B%E5%8A%9B%E4%B8%8E%E5%81%A5%E5%BA%B7%E7%A0%94%E7%A9%B6&TemplateCode=SMS_225121390&TemplateParam=%7B%22code%22%3A%223913%22%7D (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x10a2fa250>: Failed to establish a new connection: [Errno 8] nodename nor servname provided, or not known'))
+ERROR 2024-07-16 14:18:59,161 basehttp "POST /sms HTTP/1.1" 500 115289
+ERROR 2024-07-16 14:22:45,291 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 153, in handleSendSMSRequest
+    user.save()
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/contrib/auth/base_user.py", line 68, in save
+    super().save(*args, **kwargs)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/base.py", line 812, in save
+    self.save_base(
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/base.py", line 863, in save_base
+    updated = self._save_table(
+              ^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/base.py", line 976, in _save_table
+    updated = self._do_update(
+              ^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/base.py", line 1040, in _do_update
+    return filtered._update(values) > 0
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/query.py", line 1216, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1822, in execute_sql
+    cursor = super().execute_sql(result_type)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1385, in execute_sql
+    sql, params = self.as_sql()
+                  ^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/backends/mysql/compiler.py", line 50, in as_sql
+    update_query, update_params = super().as_sql()
+                                  ^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/db/models/sql/compiler.py", line 1782, in as_sql
+    raise TypeError(
+TypeError: Tried to update field auth.User.username with a model instance, <Whitelist: 3J4TR9Y>. Use a value compatible with CharField.
+ERROR 2024-07-16 14:22:45,293 basehttp "POST /sms HTTP/1.1" 500 145916
+ERROR 2024-07-16 14:23:22,147 log Internal Server Error: /sms
+Traceback (most recent call last):
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/django/views/generic/base.py", line 103, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/anaconda3/envs/CPT/lib/python3.11/site-packages/rest_framework/decorators.py", line 50, in handler
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/lyy/Desktop/CPT_9/CPT-BE-2024/core/views.py", line 135, in handleSendSMSRequest
+    whitelist = Whitelist.objects.get(phoneNumber=encryptPhoneNumber(phoneNumber))
+                                                  ^^^^^^^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'encryptPhoneNumber' where it is not associated with a value
+ERROR 2024-07-16 14:23:22,149 basehttp "POST /sms HTTP/1.1" 500 94073

@@ -9,7 +9,7 @@ class WebUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, help_text="Auth user")
     bludId = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uid")
     sms = models.CharField(null=True, blank=True, default=0, max_length=20)
-    phoneNumber = models.CharField(max_length=200, help_text="Phone number")
+    phoneNumber = models.CharField(max_length=200, help_text="Encrypted phone number")
 
     group = models.TextField(choices=[("Exp", "Exp"), ("Waitlist", "Waitlist")], default="Exp")
     currentDay = models.FloatField(default=1, help_text="User task progress - note that this number might be a float")
@@ -50,3 +50,11 @@ class WebUser(models.Model):
         self.gameData = {}
         self.score = 0
         self.save()
+        
+
+class Whitelist(models.Model):
+    
+    phoneNumber = models.CharField(max_length=200, unique=True, help_text="Encypted phone number")
+
+    def __str__(self):
+        return self.phoneNumber

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import WebUser
+from .models import WebUser, Whitelist
 # Register your models here.
 
 
@@ -12,3 +12,4 @@ class WebUserAdmin(admin.ModelAdmin):
     actions = [reset_game]
     
 admin.site.register(WebUser, WebUserAdmin)
+admin.site.register(Whitelist)

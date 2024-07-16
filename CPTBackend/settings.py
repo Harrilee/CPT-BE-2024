@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'django_crontab'
 ]
 
 REST_FRAMEWORK = {
@@ -199,3 +200,11 @@ LOGGING = {
     },
 }
 
+# Crontab
+
+CRONJOBS = [
+    # ('0 8 * * *', 'core.tasks.launch_tasks', [8], {}, '>> log.txt'),
+    # ('0 20 * * *', 'core.tasks.launch_tasks', [20], {}, '>> log.txt')
+]
+
+TIME_ZONE = 'Asia/Hong_Kong'
