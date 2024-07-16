@@ -143,7 +143,7 @@ def handleSendSMSRequest(request):
                 webUser = WebUser.objects.get(phoneNumber=encryptedPhoneNumber)
                 webUser.sms = generated_passcode
                 
-                #TODO
+                #TODO: link blueid
                 if uuid:  
                     webUser.bludId = uuid
                     

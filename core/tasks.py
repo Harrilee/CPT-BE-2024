@@ -17,6 +17,10 @@ from core.utility import decryptPhoneNumber
 with open("core/scheduled_tasks.json") as f:
     tasks = json.load(f)
 
+#TODO: blue站内信
+def send_notifitaion(user: WebUser, message: str):
+    pass
+
 def launch_tasks(time: int):
     print(f"Event triggered at {datetime.now()}, with time {time}.")
     # log = Log.objects.create(
@@ -55,6 +59,7 @@ def launch_tasks(time: int):
             # send message
             print(f"Message {sub_task['_note']} sent to {user.phoneNumber} on task {sub_task['task_no']}, day {currentDay}")
             # res = SMS.SmsService.sendMsg(decryptPhoneNumber(user.phoneNumber), sub_task['template_code'])
+            #TODO: blue站内信
             # if res['statusCode'] == 200:
             #     log = Log.objects.create(
             #         user=user,
@@ -77,6 +82,3 @@ if __name__ == "__main__":
     # pprint.pprint(tasks)
     
     
-
-
-# 用于上海纽约大学压力与健康研究干预培训开始前给参与者的短信通知;网络问卷的地址为:https://nyu.qualtrics.com/jfe/form/SV_3a3qIWFfpLZIJtY。点击可以查看上海纽约大学批准的研究知情同意书

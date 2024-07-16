@@ -5,7 +5,7 @@
         "days": [0],
         "time": "20",
         "criteria": ["not_banned"],
-        "template_code": "SMS_462050906",
+        "template_code": "SMS_469065630",
         "_note": "任务开始短信-仅实验组"
     },
     {
@@ -14,7 +14,7 @@
         "days": [0],
         "time": "20",
         "criteria": ["not_banned"],
-        "template_code": "SMS_462050906",
+        "template_code": "SMS_468990683",
         "_note": "任务开始短信-对照组"
     },
     {
@@ -23,16 +23,16 @@
         "days": [2, 3, 4, 5, 6, 7, 8, 9],
         "time": "8",
         "criteria": ["not_banned"],
-        "template_code": "SMS_462050908",
+        "template_code": "SMS_469080659",
         "_note": "每日任务开启短信-仅实验组"
     },
     {
         "task_no": [2.2],
         "groups": ["Exp", "Waitlist"],
-        "days": [2, 3, 4, 5, 6, 7, 8, 9],
+        "days": [1, 23, 39, 99],
         "time": "8",
         "criteria": ["not_banned"],
-        "template_code": "SMS_462050908",
+        "template_code": "SMS_469065631",
         "_note": "每日任务开启短信-所有人"
     },
     {
@@ -41,7 +41,7 @@
         "days": [2, 3, 4, 5, 6, 7, 8, 9],
         "time": "20",
         "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_461960894",
+        "template_code": "SMS_468985671",
         "_note": "当日未完成提醒短信-仅实验组"
     },
     {
@@ -50,7 +50,7 @@
         "days": [1],
         "time": "20",
         "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_461960894",
+        "template_code": "SMS_468935622",
         "_note": "当日未完成提醒短信-所有人"
     },
     {
@@ -59,7 +59,7 @@
         "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "time": "20",
         "criteria": ["not_banned", "has_unsent_quality_check_fail_msg"],
-        "template_code": "SMS_462035886",
+        "template_code": "SMS_469105561",
         "_note": "低质量写作提醒短信-仅实验组"
     },
     {
@@ -68,7 +68,7 @@
         "days": [22],
         "time": "20",
         "criteria": ["not_banned"],
-        "template_code": "SMS_461960895",
+        "template_code": "SMS_469030655",
         "_note": "第一次后续调查Day23参与提示短信"
     },
     {
@@ -77,7 +77,7 @@
         "days": [38],
         "time": "20",
         "criteria": ["not_banned"],
-        "template_code": "SMS_461960895",
+        "template_code": "SMS_468890661",
         "_note": "第二次后续调查Day39参与提示短信"
     },
     {
@@ -86,7 +86,7 @@
         "days": [98],
         "time": "20",
         "criteria": ["not_banned"],
-        "template_code": "SMS_461960895",
+        "template_code": "SMS_468965635",
         "_note": "第三次后续调查Day99参与提示短信"
     },
     {
@@ -95,7 +95,7 @@
         "days": [23, 39, 99],
         "time": "20",
         "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_462035886",
+        "template_code": "SMS_468905664",
         "_note": "后续调查未完成提醒-当日晚8点"
     },
     {
@@ -104,7 +104,7 @@
         "days": [24, 40, 100],
         "time": "8",
         "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_462035886",
+        "template_code": "SMS_469005678",
         "_note": "后续调查未完成提醒-次日早八点"
     },
     {
@@ -113,7 +113,7 @@
         "days": [25, 41, 101],
         "time": "8",
         "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_462035886",
+        "template_code": "SMS_469055619",
         "_note": "后续调查未完成提醒-第三日早八点"
     }
 ]
