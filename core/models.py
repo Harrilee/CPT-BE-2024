@@ -43,7 +43,6 @@ class WebUser(models.Model):
     feedback8 = models.TextField(null=True, blank=True, help_text="Please write feedback in Markdown format")
     feedback8Viewed = models.BooleanField(default=False, help_text="Auto set to true when user views feedback")
     
-    
     game = models.BinaryField(null=True)
     gameBreakFlag = models.BooleanField(default=False)
     gameFinished = models.BooleanField(default=False)

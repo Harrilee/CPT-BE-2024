@@ -76,6 +76,8 @@ def writing(request, day):
             answer = getattr(webUser, field_map[day], None)
             if not answer:
                 return Response({"error": "回答不存在", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
+            webUser.currentDay = max(day+1, webUser.currentDay)
+            webUser.save()
             return Response({'answer': answer, 'reference': reference, 'prompt': prompt}, status=status.HTTP_200_OK)
         if request.method == "POST":
             if day > webUser.currentDay:

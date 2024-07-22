@@ -22,7 +22,7 @@ def send_notifitaion(user: WebUser, message: str):
     pass
 
 def launch_tasks(time: int):
-    print(f"Event triggered at {datetime.now()}, with time {time}.")
+    # print(f"Event triggered at {datetime.now()}, with time {time}.")
     # log = Log.objects.create(
     #     user=None,
     #     log=f"Event triggered at {datetime.now()}, with time {time}."
@@ -42,7 +42,7 @@ def launch_tasks(time: int):
                 continue
             startDate = datetime.combine(user.startDate, datetime.min.time())
             today = datetime.combine(datetime.now().date(), datetime.min.time())
-            currentDay = (today - startDate).days
+            currentDay = (today - startDate).days+1
             if currentDay not in sub_task['days']:
                 continue
             # check criteria
