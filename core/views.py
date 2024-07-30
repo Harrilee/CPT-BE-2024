@@ -103,7 +103,6 @@ def writing(request, day):
 @permission_classes([IsAuthenticated])
 def game(request):
     try:
-        # if use phonenumber, need encryption in the future
         user = request.user
         return getNewGame(user).handleRequest(request)
     except Exception as e:
@@ -128,11 +127,15 @@ def finishVideo(request):
 def handleSendSMSRequest(request):
 
     phoneNumber = json.loads(request.body)['phoneNumber']
-    uuid = request.query_params.get('uuid') 
+    uuid = json.loads(request.body)['uuid']
 
     if len(phoneNumber)>8 and phoneNumber.isnumeric(): # 一般手机号长度 大于 8
+        if not uuid:
+            return Response({"error": "请通过Blued应用访问网址"}, status=status.HTTP_400_BAD_REQUEST)
         try:
             whitelist = Whitelist.objects.get(phoneNumber=encryptPhoneNumber(phoneNumber))
+            if not whitelist.has_add_wechat:
+                return Response({"error": "请等待助教添加您的微信"}, status=status.HTTP_400_BAD_REQUEST)
             encryptedPhoneNumber = whitelist.phoneNumber
             generated_passcode = str(random.randint(1000, 9999))
             response = SMS.SmsService.send(phoneNumber, generated_passcode)
@@ -144,11 +147,7 @@ def handleSendSMSRequest(request):
                     WebUser.objects.create(user=user, phoneNumber=encryptedPhoneNumber)
                 webUser = WebUser.objects.get(phoneNumber=encryptedPhoneNumber)
                 webUser.sms = generated_passcode
-                
-                #TODO: link blueid
-                if uuid:  
-                    webUser.bludId = uuid
-                    
+                webUser.bluedUuid = uuid
                 webUser.save()
                 user.set_password(generated_passcode)
                 user.save()
@@ -181,3 +180,8 @@ def login(request):
             return Response({"error": "尚未获取验证码"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"error": "手机号码或验证码不合规"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST"])
+def wenjuanxing_submission(request):
+    pass

@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 class WebUser(models.Model):
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, help_text="Auth user")
-    bludId = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uid")
+    bluedUuid = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uuid")
     sms = models.CharField(null=True, blank=True, default=0, max_length=20)
     phoneNumber = models.CharField(max_length=200, help_text="Encrypted phone number")
 
@@ -93,7 +93,8 @@ class WebUser(models.Model):
 class Whitelist(models.Model):
     
     phoneNumber = models.CharField(max_length=200, unique=True, help_text="Encypted phone number")
-
+    has_add_wechat = models.BooleanField(default=False, help_text="Please set it to true after adding user's wechat")
+    
     def __str__(self):
         return self.phoneNumber
     
