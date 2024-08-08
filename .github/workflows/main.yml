@@ -1,28 +1,12 @@
-# Reference: https://docs.github.com/en/actions/publishing-packages/publishing-docker-images
-
 name: Deploy to Production
 
 on:
   push:
     branches: ['production']
 
-
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  # variables
-  CORS_ALLOWED_ORIGINS: ${{ vars.CORS_ALLOWED_ORIGINS }}
-  DB_HOST: ${{ vars.DB_HOST }}
-  DB_NAME: ${{ vars.DB_NAME }}
-  DB_PORT: ${{ vars.DB_PORT }}
-  DB_USER: ${{ vars.DB_USER }}
-  # secrets
-  ALIYUN_ACCESS_KEY_ID: ${{ secrets.ALIYUN_ACCESS_KEY_ID }}
-  ALIYUN_ACCESS_SECRET: ${{ secrets.ALIYUN_ACCESS_SECRET }}
-  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-  ENCRYPTION_SALT: ${{ secrets.ENCRYPTION_SALT }}
-  SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
 jobs:
   build-and-push-image:
     runs-on: ubuntu-latest
@@ -32,6 +16,8 @@ jobs:
       packages: write
       attestations: write
       id-token: write
+    outputs:
+      image-digest: ${{ steps.push.outputs.digest }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -57,10 +43,10 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
-  # SSH with private key, docker login, and deploy
+
   deploy:
     runs-on: ubuntu-latest
     needs: build-and-push-image
@@ -72,7 +58,21 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.3
         with:
           ssh-private-key: ${{ secrets.TENCENT_CLOUD_VM_PK }}
+      - name: Prepare deploy.sh with secrets
+        run: |
+            IMAGE_SHA="${{ needs.build-and-push-image.outputs.image-digest }}"
+            sed -i "s|\$CORS_ALLOWED_ORIGINS|${{ vars.CORS_ALLOWED_ORIGINS }}|g" deploy.sh
+            sed -i "s|\$DB_HOST|${{ vars.DB_HOST }}|g" deploy.sh
+            sed -i "s|\$DB_NAME|${{ vars.DB_NAME }}|g" deploy.sh
+            sed -i "s|\$DB_PORT|${{ vars.DB_PORT }}|g" deploy.sh
+            sed -i "s|\$DB_USER|${{ vars.DB_USER }}|g" deploy.sh
+            sed -i "s|\$ALIYUN_ACCESS_KEY_ID|${{ secrets.ALIYUN_ACCESS_KEY_ID }}|g" deploy.sh
+            sed -i "s|\$ALIYUN_ACCESS_SECRET|${{ secrets.ALIYUN_ACCESS_SECRET }}|g" deploy.sh
+            sed -i "s|\$DB_PASSWORD|${{ secrets.DB_PASSWORD }}|g" deploy.sh
+            sed -i "s|\$ENCRYPTION_SALT|${{ secrets.ENCRYPTION_SALT }}|g" deploy.sh
+            sed -i "s|\$SECRET_KEY|${{ secrets.SECRET_KEY }}|g" deploy.sh
+            sed -i "s|\$IMAGE_SHA|$IMAGE_SHA|g" deploy.sh
+            echo "Image SHA: $IMAGE_SHA"
       - name: Deploy to production
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -s' < deploy.sh
-
