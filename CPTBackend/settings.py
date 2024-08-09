@@ -81,6 +81,8 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CSRF_TRUSTED_ORIGINS = ["https://shnyu.danlanlove.com"]
+
 ROOT_URLCONF = 'CPTBackend.urls'
 
 TEMPLATES = [
