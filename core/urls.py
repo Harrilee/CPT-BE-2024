@@ -13,4 +13,5 @@ urlpatterns = [
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name ='token_refresh'),
     path('sms', views.handleSendSMSRequest, name='handleSendSMSRequest'),
     path('login', views.login, name='login'),
+    path('qualtrics_submission', views.qualtrics_submission, name='qualtrics_submission'),
 ]

@@ -15,6 +15,8 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 
+print("Test env: ", os.getenv('DB_NAME'))
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -28,14 +30,16 @@ SECRET_KEY = 'django-insecure-3n%%0m@2=-0b8=z3ow+uz%hkzve^woq**466e8y^ta59u+l*7h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [".ngrok-free.app", "localhost", "127.0.0.1"]
 
+CSRF_TRUSTED_ORIGINS = ["https://*.ngrok-free.app"]
 
 # Application definition
 
 #
 
 CORS_ALLOWED_ORIGINS = os.getenv('CORS_ALLOWED_ORIGINS').split(',')
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -47,7 +51,8 @@ INSTALLED_APPS = [
     'core',
     'rest_framework',
     'corsheaders',
-    'rest_framework_simplejwt'
+    'rest_framework_simplejwt',
+    'django_crontab'
 ]
 
 REST_FRAMEWORK = {
@@ -193,3 +198,11 @@ LOGGING = {
     },
 }
 
+# Crontab
+
+CRONJOBS = [
+    ('0 8 * * *', 'core.tasks.launch_tasks', [8], {}, '>> log.txt'),
+    ('0 20 * * *', 'core.tasks.launch_tasks', [20], {}, '>> log.txt')
+]
+
+TIME_ZONE = 'Asia/Hong_Kong'

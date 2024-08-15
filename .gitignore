@@ -2,3 +2,8 @@ __pycache__
 migrations
 .venv
 .env
+access_key_ID.txt
+access_key_secret.txt
+*.log
+*.pem
+.DS_Store

@@ -2,19 +2,16 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-import jwt
-from dotenv import load_dotenv
-import os
-from .models import WebUser
+from .models import WebUser, Whitelist
 from .serializers import WebUserSerializer
-from .utility import jwt_required
+from .utility import *
 import json
 from core.services.gameInit import *
 from .services import SMS
 import random
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
-
+from django.views.decorators.csrf import csrf_exempt
 
 import logging
 logger = logging.getLogger('django')
@@ -36,79 +33,70 @@ def info(request):
             if request.data.get("feedback6Viewed"):
                 mutable_data['currentDay'] = max(webUser.currentDay, 8)
             elif request.data.get("feedback8Viewed"):
-                mutable_data['currentDay'] = max(webUser.currentDay, 10)
+                mutable_data['currentDay'] = max(webUser.currentDay, 23)
             serializer = WebUserSerializer(webUser, data=mutable_data, partial=True) 
             if serializer.is_valid():
-                web = serializer.save()
+                serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({"error": serializer.errors}, status=status.HTTP_400_BAD_REQUEST) 
+                return Response({"error": f"更新失败{serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST) 
     except WebUser.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': '用户不存在'}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        logger.error("An error occurred: %s", e, exc_info=True)
+        return Response({'error': "这是一个程序错误。请通知管理员联系开发者"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # /writing/[day]，所有的写作（POST、GET)，GET 需要包含参考答案，数据库里面全部用JSON，一张表一个field
 @api_view(["GET", "POST"])
 @permission_classes([IsAuthenticated])
 def writing(request, day):
-    field_map = {
-        1: 'freeWriting',
-        4: 'challengeWriting1',
-        5: 'challengeWriting2',
-        6: 'challengeWriting3',
-        8: 'virtualLetter',
-    }
     try:
         user = request.user
         webUser = WebUser.objects.get(user=user)
         if request.method == "GET":
             if day > webUser.currentDay:
-                return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-            if day == 6: prompt = webUser.freeWriting
+                return Response({"error": f"当前进度尚未达到第 {day} 天"}, status=status.HTTP_403_FORBIDDEN)
+            if day == 6: prompt = webUser.writing1
             else: prompt = None
             if day in [4, 5]:
                 with open(f"writings/challenge_writing_day{day}_reference.json", "r") as f:
                     reference = json.load(f)
             else: reference = None
-            answer = getattr(webUser, field_map[day], None)
+            answer = getattr(webUser, f'writing{day}', None)
             if not answer:
-                return Response({"error": "Past content does not exist", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
-            # webUser.currentDay = max(day, webUser.currentDay)
-            # webUser.save()
-            # print(webUser.currentDay)
+                return Response({"error": "回答不存在", 'prompt': prompt}, status=status.HTTP_404_NOT_FOUND)
+            webUser.currentDay = max(day+1, webUser.currentDay)
+            webUser.save()
             return Response({'answer': answer, 'reference': reference, 'prompt': prompt}, status=status.HTTP_200_OK)
         if request.method == "POST":
             if day > webUser.currentDay:
-                return Response({"error": f"Current progress has not reach day {day}"}, status=status.HTTP_400_BAD_REQUEST)
-            writing_field = getattr(webUser, field_map[day], None)
+                return Response({"error": f"当前进度尚未达到第 {day} 天"}, status=status.HTTP_403_FORBIDDEN)
+            writing_field = getattr(webUser, f'writing{day}', None)
             if writing_field:
-                return Response({"error": "The content for this writing task exists", "exist": True}, status=status.HTTP_400_BAD_REQUEST)
-            webUser.currentDay = day+1
-            setattr(webUser, field_map[day], request.data)
+                return Response({"error": "该写作任务的内容已存在", "exist": True}, status=status.HTTP_400_BAD_REQUEST)
+            webUser.currentDay = max(day+1, webUser.currentDay)
+            setattr(webUser, f'writing{day}', request.data)
             webUser.save()
             return Response(status=status.HTTP_200_OK)
     except WebUser.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': '用户不存在'}, status=status.HTTP_404_NOT_FOUND)
     except KeyError:
-        return Response({"error": "Invalid day for writing"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({"error": "无效的写作日期"}, status=status.HTTP_404_NOT_FOUND)
     except Exception as e:
         logger.error("An error occurred: %s", e, exc_info=True)
-        return Response({"error": "An internal server error occurred."}, status=500)
+        return Response({"error": "这是一个程序错误。请通知管理员联系开发者"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-    
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def game(request):
     try:
-        # if use phonenumber, need encryption in the future
         user = request.user
         return getNewGame(user).handleRequest(request)
     except Exception as e:
         logger.error("An error occurred: %s", e, exc_info=True)
-        return Response({"error": "An internal server error occurred."}, status=500)
+        return Response({"error": "这是一个程序错误。请通知管理员联系开发者"}, status=500)
     
     
 @api_view(['POST'])
@@ -121,40 +109,35 @@ def finishVideo(request):
         webUser.save()
         return Response(status=status.HTTP_200_OK)
     except WebUser.DoesNotExist:
-        return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': '用户不存在'}, status=status.HTTP_404_NOT_FOUND)
     
     
 @api_view(['POST'])
 def handleSendSMSRequest(request):
-
     phoneNumber = json.loads(request.body)['phoneNumber']
-    uuid = request.query_params.get('uuid') 
-
     if len(phoneNumber)>8 and phoneNumber.isnumeric(): # 一般手机号长度 大于 8
-
+        encryptedPhoneNumber = encryptPhoneNumber(phoneNumber)
+        user = User.objects.filter(username=encryptedPhoneNumber).first()
+        webUser = WebUser.objects.filter(phoneNumber=encryptedPhoneNumber).first()
+        if not webUser:
+            whitelist = Whitelist.objects.filter(phoneNumber=encryptedPhoneNumber).first()
+            if not whitelist:
+                return Response({"error": "用户信息未加入白名单，请联系管理员"}, status=status.HTTP_404_NOT_FOUND)
+            if not whitelist.has_add_wechat:
+                return Response({"error": "请等待助教添加您的微信"}, status=status.HTTP_400_BAD_REQUEST)
+            if not user:
+                user = User.objects.create_user(username=encryptedPhoneNumber)
+            webUser = WebUser.objects.create(user=user, phoneNumber=encryptedPhoneNumber, group=whitelist.group, uuid=whitelist.uuid, startDate=whitelist.startDate)
         generated_passcode = str(random.randint(1000, 9999))
         response = SMS.SmsService.send(phoneNumber, generated_passcode)
-
         if response['statusCode'] == 200:
-            try:
-                user = User.objects.get(username=phoneNumber)
-            except User.DoesNotExist:
-                user = User.objects.create_user(username=phoneNumber)
-                WebUser.objects.create(user=user, phoneNumber=phoneNumber)
-            webUser = WebUser.objects.get(phoneNumber=phoneNumber)
             webUser.sms = generated_passcode
-            
-            if uuid:  
-                webUser.bludId = uuid
-                
             webUser.save()
             user.set_password(generated_passcode)
             user.save()
-            return Response({'message': 'SMS sent', 'uuid': uuid}, status=status.HTTP_200_OK)
-        
+            return Response({'message': 'SMS sent'}, status=status.HTTP_200_OK)
         else:
-            return Response({"error": response[1]}, status=status.HTTP_400_BAD_REQUEST)
-        
+            return Response({"error": response[1]}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     else:
         return Response({"error": "手机号码不合规"}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -166,7 +149,7 @@ def login(request):
 
     if len(phoneNumber) > 8 and phoneNumber.isnumeric() and len(passcode) == 4 and passcode.isnumeric():
         try:
-            user = User.objects.get(username=phoneNumber)
+            user = User.objects.get(username=encryptPhoneNumber(phoneNumber))
             if user.check_password(passcode):
                 refresh = RefreshToken.for_user(user)
                 return Response({
@@ -179,3 +162,44 @@ def login(request):
             return Response({"error": "尚未获取验证码"}, status=status.HTTP_400_BAD_REQUEST)
     else:
         return Response({"error": "手机号码或验证码不合规"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(["POST", "GET"])
+@csrf_exempt
+def qualtrics_submission(request):
+    
+    body = json.loads(request.body)
+    print(body)
+    
+    if ('phoneNumber' not in body and 'uuid' not in body) or (body['invalid'] not in [0, 1]) or body['surveyDay'] not in [0, 1, 23, 39, 99]:
+        return Response({"status": "Fail", "message": "无效问卷"}, status=status.HTTP_400_BAD_REQUEST) 
+
+    day = body["surveyDay"]
+    isvalid = "False" if body['invalid'] == 1 else "True"
+    phoneNumber = encryptPhoneNumber(body["phoneNumber"])
+    responseId =  body["responseId"]
+    
+    if day == 0:
+        if isvalid == "True":
+            if not Whitelist.objects.filter(uuid=body['uuid']).exists():
+                whitelist = Whitelist.objects.create(phoneNumber=phoneNumber, uuid=body['uuid'], survey0=responseId)
+                whitelist.save()
+            else:
+                return Response({"status": "Fail", "message": "用户已存在"}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        try:
+            webUser = WebUser.objects.get(uuid=body['uuid'])
+            setattr(webUser, f"survey{day}", responseId)
+            setattr(webUser, f"survey{day}Valid", isvalid)
+            if day == 1:
+                currentDay = 1.1
+            elif day == 23:
+                currentDay = 39
+            elif day == 99:
+                currentDay = 100
+            webUser.currentDay = max(webUser.currentDay, currentDay)
+            webUser.save()
+        except WebUser.DoesNotExist:
+            return Response({"status": "Fail", "message": "用户不存在"}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({"status": "Fail", "message": "成功提交"}, status=status.HTTP_200_OK)

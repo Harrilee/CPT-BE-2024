@@ -46,6 +46,7 @@ def getNewGame(user: str) -> MiniGame|Response:
         pickle_game = pickle.dumps(game)
         webUser.game = pickle_game
         webUser.save()
+        webUser.validity_check()
         return game
     else:
         # print("Game already initialized")

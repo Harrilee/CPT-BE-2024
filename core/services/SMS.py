@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # This file is auto-generated, don't edit it. Thanks.
-import sys
 
 from typing import List
 
@@ -9,12 +8,14 @@ from alibabacloud_tea_openapi import models as open_api_models
 from alibabacloud_tea_util import models as util_models
 from alibabacloud_openapi_util.client import Client as OpenApiUtilClient
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 class SmsService:
-    with open('access_key_ID.txt') as f:
-        access_key_id = f.read().strip()
-    with open('access_key_secret.txt') as f:
-        access_key_secret = f.read().strip()
+    
+    access_key_id = os.getenv("ALIYUN_ACCESS_KEY_ID")
+    access_key_secret = os.getenv("ALIYUN_ACCESS_SECRET")
 
     @staticmethod
     def create_client(
