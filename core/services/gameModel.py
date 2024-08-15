@@ -8,6 +8,8 @@ from django.http import HttpResponse, JsonResponse
 
 from core.models import WebUser
 
+from . import blued_msg
+
 sys.setrecursionlimit(10000)  # Set the recursion limit to a higher value
 ThoughtDict = {"非黑即白": "表现为以极端的方式看待事物，不能或不愿看到灰色地带。",
                "以偏概全": "指将某一事件或者某一时间点作为唯一证据用于一个宽泛的结论。",
@@ -453,6 +455,9 @@ class MiniGame(Node):
                 self.user.game = pickle_game
                 self.user.currentDay = 3
                 self.user.save()
+                if self.user.group != "Waitlist" and self.user.score < 30600:
+                    # Day2游戏低于总分30%
+                    blued_msg.send(self.user.uuid, 7)
                 break
             node = self.current_node.consume(self, request)
             request.body = b'{"choice":""}'
@@ -463,7 +468,10 @@ class MiniGame(Node):
                 self.user.game = pickle_game
                 self.user.currentDay = 4
                 self.user.save()
-                # self.user.validity_check()
+                banReasons, banTags = self.user.validity_check()
+                if self.user.group != "Waitlist" and "game_score_low" in banTags:
+                    # 游戏总得分低于60%
+                    blued_msg.send(self.user.uuid, 13)
                 break
 
             if not isinstance(node, WaitingForInput):
