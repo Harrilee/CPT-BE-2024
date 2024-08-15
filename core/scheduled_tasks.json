@@ -1,119 +1,142 @@
 [
     {
-        "task_no": [1.1],
-        "groups": ["Exp"],
-        "days": [0],
-        "time": "20",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_469065630",
-        "_note": "任务开始短信-仅实验组"
-    },
-    {
-        "task_no": [1.2],
+        "id": 1,
         "groups": ["Waitlist"],
         "days": [0],
-        "time": "20",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_468990683",
-        "_note": "任务开始短信-对照组"
-    },
-    {
-        "task_no": [2.1],
-        "groups": ["Exp"],
-        "days": [2, 3, 4, 5, 6, 7, 8, 9],
         "time": "8",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_469080659",
-        "_note": "每日任务开启短信-仅实验组"
+        "criteria": ["not_banned", "day_0"]
     },
     {
-        "task_no": [2.2],
-        "groups": ["Exp", "Waitlist"],
+        "id": 2,
+        "groups": ["Exp1", "Exp2"],
+        "days": [0],
+        "time": "8",
+        "criteria": ["not_banned", "day_0"]
+    },
+    {
+        "id": 3,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [1, 23, 39, 99],
         "time": "8",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_469065631",
-        "_note": "每日任务开启短信-所有人"
+        "criteria": ["not_banned"]
     },
     {
-        "task_no": [3.1],
-        "groups": ["Exp"],
+        "id": 4,
+        "groups": ["Exp1", "Exp2"],
         "days": [2, 3, 4, 5, 6, 7, 8, 9],
-        "time": "20",
-        "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_468985671",
-        "_note": "当日未完成提醒短信-仅实验组"
+        "time": "8",
+        "criteria": ["not_banned"]
     },
     {
-        "task_no": [3.2],
-        "groups": ["Exp", "Waitlist"],
-        "days": [1],
-        "time": "20",
-        "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_468935622",
-        "_note": "当日未完成提醒短信-所有人"
-    },
-    {
-        "task_no": [4],
-        "groups": ["Exp"],
+        "id": 5,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "time": "20",
-        "criteria": ["not_banned", "has_unsent_quality_check_fail_msg"],
-        "template_code": "SMS_469105561",
-        "_note": "低质量写作提醒短信-仅实验组"
+        "criteria": ["not_banned", "task_not_done"]
     },
     {
-        "task_no": [5],
-        "groups": ["Exp", "Waitlist"],
+        "id": 6,
+        "groups": ["Exp1", "Exp2"],
+        "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "20",
+        "criteria": ["not_banned", "has_unsent_quality_check_fail_msg"]
+    },
+    {
+        "id": 7,
+        "groups": ["Exp1", "Exp2"],
+        "days": [2], 
+        "time": "after the game ends",
+        "criteria": ["not_banned"]
+    },
+    {
+        "id": 8,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [22],
         "time": "20",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_469030655",
-        "_note": "第一次后续调查Day23参与提示短信"
+        "criteria": ["not_banned"]
     },
     {
-        "task_no": [6],
-        "groups": ["Exp", "Waitlist"],
+        "id": 9,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [38],
         "time": "20",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_468890661",
-        "_note": "第二次后续调查Day39参与提示短信"
+        "criteria": ["not_banned"]
     },
     {
-        "task_no": [7],
-        "groups": ["Exp", "Waitlist"],
+        "id": 10,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [98],
         "time": "20",
-        "criteria": ["not_banned"],
-        "template_code": "SMS_468965635",
-        "_note": "第三次后续调查Day99参与提示短信"
+        "criteria": ["not_banned"]
     },
     {
-        "task_no": [8.1],
-        "groups": ["Exp", "Waitlist"],
+        "id": 11,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [23, 39, 99],
+        "time": ["20"],  
+        "criteria": ["not_banned", "task_not_done"]
+    },
+    {
+        "id": 11,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
+        "days": [24, 40, 100, 25, 41, 101, 27, 43, 103, 29, 45, 105],
+        "time": ["8"], 
+        "criteria": ["not_banned", "task_not_done"]
+    },
+    {
+        "id": 12,
+        "groups": ["Exp1", "Exp2"],
+        "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
+        "time": "8",
+        "criteria": ["banned", "has_unsent_banned_msg", "task_not_done"]
+    },
+    {
+        "id": 13,
+        "groups": ["Exp1", "Exp2"],
+        "days": [3],
+        "time": "after the game ends",
+        "criteria": ["banned", "has_unsent_banned_msg", "game_score_low"]
+    },
+    {
+        "id": 14,
+        "groups": ["Exp1", "Exp2"],
+        "days": [1, 2, 3, 4, 5, 6, 7, 8, 9],
         "time": "20",
-        "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_468905664",
-        "_note": "后续调查未完成提醒-当日晚8点"
+        "criteria": ["banned", "has_unsent_banned_msg", "quality_check_fail"]
     },
     {
-        "task_no": [8.2],
-        "groups": ["Exp", "Waitlist"],
-        "days": [24, 40, 100],
+        "id": 15,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
+        "days": [1],
         "time": "8",
-        "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_469005678",
-        "_note": "后续调查未完成提醒-次日早八点"
+        "criteria": ["banned", "has_unsent_banned_msg", "pre_survey_invalid"]
     },
     {
-        "task_no": [8.3],
-        "groups": ["Exp", "Waitlist"],
-        "days": [25, 41, 101],
+        "id": 16,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
+        "days": [99, 100, 101, 102, 103, 104, 105],
         "time": "8",
-        "criteria": ["not_banned", "task_not_done"],
-        "template_code": "SMS_469055619",
-        "_note": "后续调查未完成提醒-第三日早八点"
+        "criteria": ["banned", "has_unsent_banned_msg", "post_survey_invalid"]
+    },
+    {
+        "id": 17,
+        "groups": ["Exp1", "Exp2"],
+        "days": [10, 11, 12, 13],
+        "time": "8",
+        "criteria": ["not_banned", "train_complete"]
+    },
+    {
+        "id": 18,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
+        "days": [106],
+        "time": "8",
+        "criteria": ["not_banned", "survey_complete"]
+    },
+    {
+        "id": 19,
+        "groups": ["Exp1", "Exp2", "Waitlist"],
+        "days": [], 
+        "time": "20", 
+        "criteria": ["not_banned", "survey_complete"]
     }
 ]
