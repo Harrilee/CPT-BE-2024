@@ -3,12 +3,12 @@ from .models import WebUser, Whitelist, Log, BannedLog
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from typing import Dict
+from django.utils import timezone
 
 # Register your models here.
-
 admin_fieldsets = [
     ("User Info and Access Status", {
-        'fields': ('user', 'phoneNumber', 'sms', 'uuid', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal', 'banNotified', 'trainCompleteNotified')
+        'fields': ('user', 'uuid', 'phoneNumber', 'sms', 'uuid', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal', 'banNotified', 'trainCompleteNotified', 'surveyCompleteNotified')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckRA', 'writing1QualityCheckCS', 'writing1QualityCheckNotified')
@@ -25,16 +25,20 @@ admin_fieldsets = [
     ("Writing  8", {    
         'fields': ('writing8', 'writing8QualityCheck', 'writing8QualityCheckRA', 'writing8QualityCheckCS', 'writing8QualityCheckNotified', 'feedback8', 'feedback8Viewed')
     }),
-
-    ("Other Data",{
-        'fields': ( ("gameBreakFlag", "gameFinished"), "gameData", 
-                   ),
+    ("Game",{
+        'fields': ( "gameBreakFlag", "gameFinished", "gameData")
+    }),
+    ("Survey",{
+        'fields': ( "survey1", "survey1IsValid", 
+                    "survey23", "survey23IsValid", 
+                    "survey39", "survey39IsValid", 
+                    "survey99", "survey99IsValid")
     })
 ]
 
 ra_fieldsets = [
     ("User Info and Access Status", {
-        'fields': ('phoneNumber', 'uuid', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal')
+        'fields': ('uuid', 'phoneNumber', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckRA')
@@ -51,15 +55,20 @@ ra_fieldsets = [
     ("Writing  8", {    
         'fields': ('writing8', 'writing8QualityCheck', 'writing8QualityCheckRA', 'feedback8Viewed')
     }),
-
-    ("Other Data",{
-        'fields': ( ("gameBreakFlag", "gameFinished"), "gameData"),
+    ("Game",{
+        'fields': ( "gameBreakFlag", "gameFinished", "gameData")
+    }),
+    ("Survey",{
+        'fields': ( "survey1", "survey1IsValid", 
+                    "survey23", "survey23IsValid", 
+                    "survey39", "survey39IsValid", 
+                    "survey99", "survey99IsValid")
     })
-    
 ]
 
-cs_filesets = [("User Info and Access Status", {
-        'fields': ( 'phoneNumber', 'group', 'currentDay', 'startDate')
+cs_filesets = [
+    ("User Info and Access Status", {
+        'fields': ( 'uuid', 'phoneNumber', 'group', 'currentDay', 'startDate')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckCS')
@@ -76,7 +85,6 @@ cs_filesets = [("User Info and Access Status", {
     ("Writing  8", {    
         'fields': ('writing8', 'writing8QualityCheck', 'writing8QualityCheckCS', 'feedback8')
     })
-    
 ]
 
 
@@ -84,6 +92,13 @@ cs_filesets = [("User Info and Access Status", {
 def reset_game(modeladmin, request, queryset):
     for obj in queryset:
         obj.reset_game()
+        
+@admin.action(description="Set Whitelist Start Date to two days later")
+def set_startDate(modeladmin, request, queryset):
+    two_days_later = timezone.now() + timezone.timedelta(days=2)
+    for obj in queryset:
+        obj.startDate = two_days_later
+        obj.save()
         
 class WebUserAdmin(admin.ModelAdmin):
     actions = [reset_game]
@@ -126,7 +141,8 @@ class WebUserAdmin(admin.ModelAdmin):
     
 class WhitelistAdmin(admin.ModelAdmin):
     list_display = ('uuid', 'group', 'has_add_wechat', 'survey0', 'startDate', 'phoneNumber')
-        
+    actions = [set_startDate]
+    
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
         obj.assign_group()
