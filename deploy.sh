@@ -24,6 +24,6 @@ docker run  \
   -e "ENCRYPTION_SALT=$ENCRYPTION_SALT" \
   -e "SECRET_KEY=$SECRET_KEY" \
   -e "AES_KEY=$AES_KEY" \
-  -d --name cpt-be -p 8000:8000 ghcr.nju.edu.cn/harrilee/cpt-be-2024@$IMAGE_SHA
+  -d --name cpt-be -p 8000:8000 ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
 
 docker system prune -f
