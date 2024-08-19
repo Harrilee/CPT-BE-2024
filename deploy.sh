@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker pull ghcr.nju.edu.cn/harrilee/cpt-fe-2024:production
+docker pull ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
 
 # Stop the current container
 docker stop cpt-be || true
@@ -18,4 +18,4 @@ docker run  \
   -e "DB_PASSWORD=$DB_PASSWORD" \
   -e "ENCRYPTION_SALT=$ENCRYPTION_SALT" \
   -e "SECRET_KEY=$SECRET_KEY" \
-  -d --name cpt-be -p 8000:8000 ghcr.nju.edu.cn/harrilee/cpt-be-2024:production
+  -d --name cpt-be -p 8000:8000 ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
