@@ -1,6 +1,6 @@
 #!/bin/bash
 
-docker pull ghcr.nju.edu.cn/harrilee/cpt-be-2024@$IMAGE_SHA
+docker pull ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
 
 # Stop the current container
 if [ "$(docker ps -q -f name=cpt-be)" ]; then
