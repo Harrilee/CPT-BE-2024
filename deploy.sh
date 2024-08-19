@@ -3,8 +3,13 @@
 docker pull ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
 
 # Stop the current container
-docker stop cpt-be || true
-docker rm cpt-be || true
+if [ "$(docker ps -q -f name=cpt-be)" ]; then
+    docker stop cpt-be || true
+    docker rm cpt-be || true
+
+else
+    echo "Container cpt-be does not exist. Creating a new one."
+fi
 
 # Start a new container with the latest image
 docker run  \
@@ -18,4 +23,7 @@ docker run  \
   -e "DB_PASSWORD=$DB_PASSWORD" \
   -e "ENCRYPTION_SALT=$ENCRYPTION_SALT" \
   -e "SECRET_KEY=$SECRET_KEY" \
+  -e "AES_KEY=$AES_KEY" \
   -d --name cpt-be -p 8000:8000 ghcr.nju.edu.cn/nyush-cpt/cpt-be-2024@$IMAGE_SHA
+
+docker system prune -f
