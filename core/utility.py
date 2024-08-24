@@ -44,5 +44,3 @@ def decryptPhoneNumber(ciphertext):
     decryptor = cipher.decryptor()
     decrypted_data = decryptor.update(ct) + decryptor.finalize()
     return decrypted_data.decode('utf-8').strip() 
-
-#TODO encryption tool for ra

@@ -12,7 +12,8 @@ class WebUser(models.Model):
     uuid = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uuid")
     sms = models.CharField(null=True, blank=True, max_length=20)
     phoneNumber = models.CharField(max_length=500, help_text="Encrypted phone number")
-
+    whitelist = models.OneToOneField("Whitelist", on_delete=models.CASCADE, related_name="webUser")
+    
     group = models.TextField(choices=[("Exp1", "Exp1"), ("Exp2", "Exp2"), ("Waitlist", "Waitlist")], default="Null")
     currentDay = models.FloatField(default=1, help_text="User task progress - note that this number might be a float")
     startDate = models.DateField(default=timezone.now, help_text="Experiment start date")
@@ -78,7 +79,7 @@ class WebUser(models.Model):
     survey99IsValid = models.TextField(choices=[("True", "True"), ("False", "False"), ("Null", "Null")], default="Null", help_text="Inherited from qualtrics survey")
     
     def __str__(self):
-        return f'{self.phoneNumber} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
+        return f'{self.uuid} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
 
     def reset_game(self): 
         self.game = None
@@ -162,11 +163,11 @@ class Whitelist(models.Model):
     has_add_wechat = models.BooleanField(default=False, help_text="Please set it to true after adding user's wechat")
     survey0 = models.TextField(max_length=30, null=True, blank=True)
     group = models.TextField(choices=[("Exp1", "Exp1"), ("Exp2", "Exp2"), ("Waitlist", "Waitlist")], default=None, null=True, blank=True)
-    startDate = models.DateField(default=timezone.now, null=True, blank=True, help_text="Experiment start date")
+    startDate = models.DateField(null=True, blank=True, help_text="Experiment start date")
     
     def __str__(self):
-        return self.phoneNumber
-
+        return self.uuid
+    
     def assign_group(self):
         if self.has_add_wechat and not self.group:
             rand = random.randint(1, 3)
@@ -175,7 +176,7 @@ class Whitelist(models.Model):
             elif rand == 2:
                 self.group = "Exp2"
             else:
-                self.group == "Waitlist"
+                self.group = "Waitlist"
             self.save()
                 
     

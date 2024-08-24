@@ -42,7 +42,7 @@ def info(request):
             else:
                 return Response({"error": f"更新失败{serializer.errors}"}, status=status.HTTP_400_BAD_REQUEST) 
     except WebUser.DoesNotExist:
-        return Response({'error': '用户不存在'}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': '用户不存在'}, status=status.HTTP_401_UNAUTHORIZED)
 
 # /writing/[day]，所有的写作（POST、GET)，GET 需要包含参考答案，数据库里面全部用JSON，一张表一个field
 @api_view(["GET", "POST"])
@@ -111,7 +111,6 @@ def handleSendSMSRequest(request):
     phoneNumber = json.loads(request.body)['phoneNumber']
     if len(phoneNumber)>8 and phoneNumber.isnumeric(): # 一般手机号长度 大于 8
         encryptedPhoneNumber = encryptPhoneNumber(phoneNumber)
-        user = User.objects.filter(username=encryptedPhoneNumber).first()
         webUser = WebUser.objects.filter(phoneNumber=encryptedPhoneNumber).first()
         if not webUser:
             whitelist = Whitelist.objects.filter(phoneNumber=encryptedPhoneNumber).first()
@@ -121,12 +120,14 @@ def handleSendSMSRequest(request):
                 return Response({"error": "请等待助教添加您的微信"}, status=status.HTTP_400_BAD_REQUEST)
             if not whitelist.startDate:
                 return Response({"error": "实验尚未开始"}, status=status.HTTP_400_BAD_REQUEST)
+            user = User.objects.filter(username=whitelist.uuid).first()
             if not user:
-                user = User.objects.create_user(username=encryptedPhoneNumber)
-            webUser = WebUser.objects.create(user=user, phoneNumber=encryptedPhoneNumber, group=whitelist.group, uuid=whitelist.uuid, startDate=whitelist.startDate)
+                user = User.objects.create_user(username=whitelist.uuid)
+            webUser = WebUser.objects.create(user=user, whitelist=whitelist, phoneNumber=encryptedPhoneNumber, group=whitelist.group, uuid=whitelist.uuid, startDate=whitelist.startDate)
         generated_passcode = str(random.randint(1000, 9999))
         response = SMS.SmsService.send(phoneNumber, generated_passcode)
         if response['statusCode'] == 200:
+            user = webUser.user
             webUser.sms = generated_passcode
             webUser.save()
             user.set_password(generated_passcode)
@@ -146,7 +147,8 @@ def login(request):
 
     if len(phoneNumber) > 8 and phoneNumber.isnumeric() and len(passcode) == 4 and passcode.isnumeric():
         try:
-            user = User.objects.get(username=encryptPhoneNumber(phoneNumber))
+            whitelist = Whitelist.objects.get(phoneNumber=encryptPhoneNumber(phoneNumber))
+            user = User.objects.get(username=whitelist.uuid)
             if user.check_password(passcode):
                 refresh = RefreshToken.for_user(user)
                 return Response({
@@ -155,6 +157,8 @@ def login(request):
                 }, status=status.HTTP_200_OK)
             else:
                 return Response({"error": "验证码错误"}, status=status.HTTP_400_BAD_REQUEST)
+        except Whitelist.DoesNotExist:
+            return Response({"error": "用户信息未加入白名单，请联系管理员"}, status=status.HTTP_404_NOT_FOUND)
         except User.DoesNotExist:
             return Response({"error": "尚未获取验证码"}, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -198,5 +202,4 @@ def qualtrics_submission(request):
         except WebUser.DoesNotExist:
             return Response({"status": "Fail", "message": "用户不存在"}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({"status": "Fail", "message": "成功提交"}, status=status.HTTP_200_OK)
-    
+    return Response({"status": "Success", "message": "成功提交"}, status=status.HTTP_200_OK)

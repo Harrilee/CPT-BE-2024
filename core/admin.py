@@ -8,7 +8,7 @@ from django.utils import timezone
 # Register your models here.
 admin_fieldsets = [
     ("User Info and Access Status", {
-        'fields': ('user', 'uuid', 'phoneNumber', 'sms', 'uuid', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal', 'banNotified', 'trainCompleteNotified', 'surveyCompleteNotified')
+        'fields': ('user', 'whitelist', 'uuid', 'sms', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal', 'banNotified', 'trainCompleteNotified', 'surveyCompleteNotified')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckRA', 'writing1QualityCheckCS', 'writing1QualityCheckNotified')
@@ -38,7 +38,7 @@ admin_fieldsets = [
 
 ra_fieldsets = [
     ("User Info and Access Status", {
-        'fields': ('uuid', 'phoneNumber', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal')
+        'fields': ('uuid', 'whitelist', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReason', 'banReasonInternal')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckRA')
@@ -68,7 +68,7 @@ ra_fieldsets = [
 
 cs_filesets = [
     ("User Info and Access Status", {
-        'fields': ( 'uuid', 'phoneNumber', 'group', 'currentDay', 'startDate')
+        'fields': ( 'uuid', 'group', 'currentDay', 'startDate')
     }),
     ("Writing  1", {
         'fields': ( 'writing1', 'writing1QualityCheck', 'writing1QualityCheckCS')
@@ -94,15 +94,26 @@ def reset_game(modeladmin, request, queryset):
         obj.reset_game()
         
 @admin.action(description="Set Whitelist Start Date to two days later")
-def set_startDate(modeladmin, request, queryset):
-    two_days_later = timezone.now() + timezone.timedelta(days=2)
-    for obj in queryset:
-        obj.startDate = two_days_later
-        obj.save()
+def set_startDate_2(modeladmin, request, queryset):
+    days_later = timezone.now() + timezone.timedelta(days=2)
+    queryset.update(startDate=days_later)
+
+               
+@admin.action(description="Set Whitelist Start Date to three days later")
+def set_startDate_3(modeladmin, request, queryset):
+    days_later = timezone.now() + timezone.timedelta(days=3)
+    queryset.update(startDate=days_later)
+              
+@admin.action(description="Set Whitelist Start Date to four days later")
+def set_startDate_4(modeladmin, request, queryset):
+    days_later = timezone.now() + timezone.timedelta(days=4)
+    queryset.update(startDate=days_later)
+
         
 class WebUserAdmin(admin.ModelAdmin):
     actions = [reset_game]
-    list_display = ('phoneNumber', 'banFlag', 'group', 'score', 'startDate', 'currentDay', 'writing4Viewed', 'writing5Viewed', 'feedback6Viewed', 'feedback8Viewed')
+    list_display = ('uuid', 'banFlag', 'group', 'score', 'startDate', 'currentDay', 'writing4Viewed', 'writing5Viewed', 'feedback6Viewed', 'feedback8Viewed')
+    exclude = ('phoneNumber', )
     
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
@@ -121,14 +132,15 @@ class WebUserAdmin(admin.ModelAdmin):
             if len(gorup) > 0 and gorup[0].name == "RA":
                 self.fieldsets = ra_fieldsets
                 self.readonly_fields += [
-                    'phoneNumber', 'uuid', 'sms', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReasonInternal', 'user'
+                    'user', 'uuid', 'whitelist', 'sms', 'score', 'group', 'currentDay', 'startDate', 'banFlag', 'banReasonInternal', 'user'
                     "gameBreakFlag", "gameFinished", 
                     "gameData",
                     'writing1', 'writing4', 'writing5', 'writing6', 'writing8'
                 ]
             elif len(gorup) > 0 and gorup[0].name == "CS":
                 self.fieldsets = cs_filesets
-                self.readonly_fields += ['phoneNumber', 'startDate', 'expGroup', 'currentDay',
+                self.readonly_fields += [
+                    'uuid', 'group', 'startDate', 'currentDay',
                     'writing1', 'writing4', 'writing5', 'writing6', 'writing8'
                     ]
             else:
@@ -140,8 +152,11 @@ class WebUserAdmin(admin.ModelAdmin):
 
     
 class WhitelistAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'group', 'has_add_wechat', 'survey0', 'startDate', 'phoneNumber')
-    actions = [set_startDate]
+    list_display = ('uuid', 'group', 'has_add_wechat', 'survey0', 'startDate')
+    actions = [set_startDate_2, set_startDate_3, set_startDate_4]
+    readonly_fields = ('uuid', 'group', 'survey0')
+    exclude = ('phoneNumber', )
+    fields = ('uuid',  'startDate', 'has_add_wechat', 'group', 'survey0')
     
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)

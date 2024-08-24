@@ -103,6 +103,7 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'CPTBackend.wsgi.application'
 
 
