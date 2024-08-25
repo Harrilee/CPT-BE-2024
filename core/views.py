@@ -203,3 +203,11 @@ def qualtrics_submission(request):
             return Response({"status": "Fail", "message": "用户不存在"}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"status": "Success", "message": "成功提交"}, status=status.HTTP_200_OK)
+
+@api_view(["GET"])
+@catch_exceptions
+def key(request):
+    key = request.query_params.get("key")
+    if not Whitelist.objects.filter(uuid=key):
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    return Response(status=status.HTTP_200_OK)
