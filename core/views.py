@@ -171,15 +171,19 @@ def login(request):
 def qualtrics_submission(request):
     body = json.loads(request.body)
     
-    if ('phoneNumber' not in body and 'uuid' not in body) or (body['invalid'] not in [0, 1]) or body['surveyDay'] not in [0, 1, 23, 39, 99]:
+    keys = {"invalid", "surveyDay", "uuid", "responseId"}
+    if any(k not in body for k in keys):
         return Response({"status": "Fail", "message": "无效问卷"}, status=status.HTTP_400_BAD_REQUEST) 
-
+    
     day = body["surveyDay"]
     isvalid = "False" if body['invalid'] == 1 else "True"
-    phoneNumber = encryptPhoneNumber(body["phoneNumber"])
     responseId =  body["responseId"]
     
+    if day == 0 and 'phoneNumber' not in body:
+        return Response({"status": "Fail", "message": "无效问卷"}, status=status.HTTP_400_BAD_REQUEST) 
+            
     if day == 0:
+        phoneNumber = encryptPhoneNumber(body["phoneNumber"])
         if isvalid == "True":
             if not Whitelist.objects.filter(uuid=body['uuid']).exists():
                 whitelist = Whitelist.objects.create(phoneNumber=phoneNumber, uuid=body['uuid'], survey0=responseId)
@@ -203,6 +207,7 @@ def qualtrics_submission(request):
             return Response({"status": "Fail", "message": "用户不存在"}, status=status.HTTP_400_BAD_REQUEST)
 
     return Response({"status": "Success", "message": "成功提交"}, status=status.HTTP_200_OK)
+
 
 @api_view(["GET"])
 @catch_exceptions
