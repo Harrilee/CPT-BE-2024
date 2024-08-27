@@ -165,7 +165,7 @@ def login(request):
         return Response({"error": "手机号码或验证码不合规"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["POST", "GET"])
+@api_view(["POST"])
 @csrf_exempt
 @catch_exceptions
 def qualtrics_submission(request):
