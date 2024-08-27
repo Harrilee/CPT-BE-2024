@@ -9,6 +9,14 @@ def send(uuid: str, id: int):
         'templateId': id,
         "param1": os.getenv("WEB_URL")
     }
+
     headers = {'Content-Type': 'application/json'}
-    response = requests.post(os.getenv("BLUED_API"), json=data, headers=headers) # {code, msg}
+    
+    response = requests.post(os.getenv("BLUED_API"), json=data, headers=headers).json() # {code, msg}
+
     return response
+
+
+if __name__=="__main__":
+    print(send("wKLBbRvD", 2))
+    
