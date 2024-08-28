@@ -37,7 +37,7 @@ def launch_tasks(time: int):
             if currentDay not in sub_task['days']:
                 continue
             # check criteria
-            if 'not_banned' in sub_task['criteria'] and not user.banFlag:
+            if 'not_banned' in sub_task['criteria'] and not banTags:
                 if 'task_not_done' in sub_task['criteria']:
                     if user.currentDay >= currentDay:
                         continue
@@ -61,7 +61,7 @@ def launch_tasks(time: int):
                     user.surveyCompleteNotified = True
                     user.save()
                         
-            elif 'banned' in sub_task["criteria"] and user.banFlag and not user.banNotified:
+            if 'banned' in sub_task["criteria"] and banTags and not user.banNotified:
                 if not any([x in sub_task["criteria"] for x in banTags]):
                     continue
                 user.banNotified = True
