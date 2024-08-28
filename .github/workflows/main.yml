@@ -66,6 +66,8 @@ jobs:
             sed -i "s|\$DB_NAME|${{ vars.DB_NAME }}|g" deploy.sh
             sed -i "s|\$DB_PORT|${{ vars.DB_PORT }}|g" deploy.sh
             sed -i "s|\$DB_USER|${{ vars.DB_USER }}|g" deploy.sh
+            sed -i "s|\$WEB_URL|${{ vars.WEB_URL }}|g" deploy.sh
+            sed -i "s|\$BLUED_API|${{ vars.BLUED_API }}|g" deploy.sh
             sed -i "s|\$ALIYUN_ACCESS_KEY_ID|${{ secrets.ALIYUN_ACCESS_KEY_ID }}|g" deploy.sh
             sed -i "s|\$ALIYUN_ACCESS_SECRET|${{ secrets.ALIYUN_ACCESS_SECRET }}|g" deploy.sh
             sed -i "s|\$DB_PASSWORD|${{ secrets.DB_PASSWORD }}|g" deploy.sh

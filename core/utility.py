@@ -9,6 +9,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from base64 import b64encode, b64decode
 import logging
+import traceback
 
 sys.path.append(os.getcwd())
 os.environ['DJANGO_SETTINGS_MODULE'] = 'CPTBackend.settings'
@@ -16,14 +17,21 @@ django.setup()
 
 load_dotenv()
 
-logger = logging.getLogger('django')
+logging.basicConfig(
+    filename='error.log',
+    level=logging.ERROR,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+)
+
 def catch_exceptions(view_func):
     @wraps(view_func)
     def wrapper(request, *args, **kwargs):
         try:
             return view_func(request, *args, **kwargs)
         except Exception as e:
-            logger.error("An error occurred: %s", e, exc_info=True)
+            tb = traceback.extract_tb(e.__traceback__)
+            filename, line, func, text = tb[-1]
+            logging.error(f"An error occurred in {filename} at line {line}: {e}")
             return Response({'error': "这是一个程序错误。请通知管理员联系开发者"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     return wrapper
 
@@ -35,7 +43,6 @@ def encryptPhoneNumber(plaintext):
     cipher = Cipher(algorithms.AES(key), modes.ECB(), backend=default_backend())
     encryptor = cipher.encryptor()
     ct = encryptor.update(plaintext.encode('utf-8')) + encryptor.finalize()
-    print(b64encode(ct).decode('utf-8') )
     return b64encode(ct).decode('utf-8') 
 
 def decryptPhoneNumber(ciphertext):

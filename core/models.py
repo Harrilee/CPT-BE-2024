@@ -190,8 +190,4 @@ class Log(models.Model):
         return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.log}'
 
 class BannedLog(Log):
-    
-    bannedLog = models.CharField(max_length=500, null=True, blank=True, help_text="Reason for banning user, auto generated")
-    
-    def __str__(self) -> str:
-        return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.bannedLog}'
+    pass
