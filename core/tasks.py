@@ -10,10 +10,12 @@ import json
 from core.models import WebUser, Log, BannedLog
 from datetime import datetime
 from core.services import blued_msg
+from core.utility import catch_exceptions
 
 with open("core/scheduled_tasks.json") as f:
     tasks = json.load(f)
 
+@catch_exceptions
 def launch_tasks(time: int):
     print(f"Event triggered at {datetime.now()}, with time {time}.")
     log = Log.objects.create(
@@ -21,7 +23,7 @@ def launch_tasks(time: int):
         log=f"Event triggered at {datetime.now()}, with time {time}."
     )
     log.save()
-    
+
     sub_tasks = filter(lambda x: x["time"] == str(time), tasks)
     for sub_task in sub_tasks:
         for user in WebUser.objects.all():
@@ -83,10 +85,10 @@ def launch_tasks(time: int):
             if banLog:
                     log = BannedLog.objects.create(
                         user=user,
-                        bannedLog=f"{user.phoneNumber} is banned because {banReasons}"
+                        log=f"{banReasons}"
                     )
                     log.save()
-    
+
     
 if __name__ == "__main__":
     launch_tasks(8)

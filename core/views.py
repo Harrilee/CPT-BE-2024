@@ -194,7 +194,7 @@ def qualtrics_submission(request):
         try:
             webUser = WebUser.objects.get(uuid=body['uuid'])
             setattr(webUser, f"survey{day}", responseId)
-            setattr(webUser, f"survey{day}Valid", isvalid)
+            setattr(webUser, f"survey{day}IsValid", isvalid)
             if day == 1:
                 currentDay = 1.1
             elif day == 23:
