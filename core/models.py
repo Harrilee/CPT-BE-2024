@@ -96,6 +96,7 @@ class WebUser(models.Model):
             setattr(self, day_attr, "True")
         else:
             setattr(self, day_attr, "Null")
+        self.save()
 
     def count_invalid_checks(self, days: list[int]):
         invalid_count = 0

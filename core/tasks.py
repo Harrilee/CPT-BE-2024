@@ -61,12 +61,15 @@ def launch_tasks(time: int):
                     user.surveyCompleteNotified = True
                     user.save()
                         
-            if 'banned' in sub_task["criteria"] and banTags and not user.banNotified:
+            elif 'banned' in sub_task["criteria"] and banTags and not user.banNotified:
                 if not any([x in sub_task["criteria"] for x in banTags]):
                     continue
                 user.banNotified = True
                 user.save()
                 banLog = True
+            
+            else: 
+                continue
                 
             res = blued_msg.send(user.uuid, sub_task["id"])
             if res['code'] == 200:
