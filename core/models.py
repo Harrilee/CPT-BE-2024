@@ -96,6 +96,7 @@ class WebUser(models.Model):
             setattr(self, day_attr, "True")
         else:
             setattr(self, day_attr, "Null")
+        self.save()
 
     def count_invalid_checks(self, days: list[int]):
         invalid_count = 0
@@ -120,7 +121,7 @@ class WebUser(models.Model):
             for day in [1, 4, 5, 6, 8]:
                 ra_attr = f'writing{day}QualityCheckRA'
                 cs_attr = f'writing{day}QualityCheckCS'
-                self.update_quality_check(f'writingDay{day}QualityCheck', getattr(self, ra_attr), getattr(self, cs_attr))
+                self.update_quality_check(f'writing{day}QualityCheck', getattr(self, ra_attr), getattr(self, cs_attr))
             invalid1 = self.count_invalid_checks([1])
             invalid4to8 = self.count_invalid_checks([4,5,6,8])
             if invalid1 >= 1:
