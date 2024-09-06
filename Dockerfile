@@ -7,6 +7,13 @@ COPY requirements.txt /app
 RUN apk add --no-cache gcc musl-dev libffi-dev pkgconf mariadb-dev mariadb-connector-c-dev g++ python3-dev
 RUN pip3 install -r requirements.txt --no-cache-dir
 COPY . /app 
+
+# Copy crontab file to the cron.d directory
+COPY crontab /etc/cron.d/crontab
+RUN chmod 777 /etc/cron.d/crontab
+RUN crontab /etc/cron.d/crontab
+RUN mkdir /logs
+
 ENTRYPOINT ["python3"] 
 CMD ["manage.py", "runserver", "0.0.0.0:8000"]
 
