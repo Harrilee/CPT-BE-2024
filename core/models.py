@@ -190,5 +190,11 @@ class Log(models.Model):
     def __str__(self) -> str:
         return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.log}'
 
-class BannedLog(Log):
-    pass
+class BannedLog(models.Model):
+    
+    time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE, null=True, blank=True)
+    log = models.TextField()
+    
+    def __str__(self) -> str:
+        return f'BannedLog [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.user.uuid} | {self.log}'
