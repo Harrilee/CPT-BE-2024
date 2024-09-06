@@ -71,19 +71,19 @@ def launch_tasks(time: int):
             else: 
                 continue
                 
-            # res = blued_msg.send(user.uuid, sub_task["id"])
-            # if res['code'] == 200:
-            log = Log.objects.create(
-                user=user,
-                log=f"Message sent to {user.uuid} on task {sub_task['id']} successfully."
-            )
-            log.save()
-            # else: 
-                # log = Log.objects.create(
-                #     user=user,
-                #     log=f"Message sent failed. Error message: " + res['msg']
-                # )
-                # log.save()
+            res = blued_msg.send(user.uuid, sub_task["id"])
+            if res['code'] == 200:
+                log = Log.objects.create(
+                    user=user,
+                    log=f"Message sent to {user.uuid} on task {sub_task['id']} successfully."
+                )
+                log.save()
+            else: 
+                log = Log.objects.create(
+                    user=user,
+                    log=f"Message sent failed. Error message: " + res['msg']
+                )
+                log.save()
                 
             if banLog:
                     log = BannedLog.objects.create(
@@ -92,8 +92,23 @@ def launch_tasks(time: int):
                     )
                     log.save()
                     
+@catch_exceptions
 def test_tasks(time: int):
     print(f"Event triggered at {datetime.now()}, with time {time}.")
+    res = blued_msg.send("wKLBbRvD", 1)
+    user = WebUser.objects.filter(uuid="wKLBbRvD").first()
+    if res['code'] == 200:
+        log = Log.objects.create(
+            user=user,
+            log=f"Message sent to {user.uuid} on task 1 successfully."
+        )
+        log.save()
+    else: 
+        log = Log.objects.create(
+            user=user,
+            log=f"Message sent failed. Error message: " + res['msg']
+        )
+        log.save()
     
 
     
