@@ -71,19 +71,19 @@ def launch_tasks(time: int):
             else: 
                 continue
                 
-            # res = blued_msg.send(user.uuid, sub_task["id"])
-            # if res['code'] == 200:
+            res = blued_msg.send(user.uuid, sub_task["id"])
+            if res['code'] == 200:
             log = Log.objects.create(
                 user=user,
                 log=f"Message sent to {user.uuid} on task {sub_task['id']} successfully."
             )
             log.save()
-            # else: 
-                # log = Log.objects.create(
-                #     user=user,
-                #     log=f"Message sent failed. Error message: " + res['msg']
-                # )
-                # log.save()
+            else: 
+                log = Log.objects.create(
+                    user=user,
+                    log=f"Message sent failed. Error message: " + res['msg']
+                )
+                log.save()
                 
             if banLog:
                     log = BannedLog.objects.create(
