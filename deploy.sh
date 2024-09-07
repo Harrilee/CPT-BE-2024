@@ -18,13 +18,7 @@ else
     echo "Container cpt-be-crontab does not exist. Creating a new one."
 fi
 
-# Stop crontab container
-if [ "$(docker ps -q -f name=cpt-be-crontab)" ]; then
-    docker stop cpt-be-crontab || true
-    docker rm cpt-be-crontab || true
-else
-    echo "Container cpt-be-crontab does not exist. Creating a new one."
-fi
+sleep 3
 
 # Start a new container with the latest image
 docker run  \
