@@ -14,6 +14,9 @@ RUN chmod 777 /etc/cron.d/crontab
 RUN crontab /etc/cron.d/crontab
 RUN mkdir /logs
 
+ENTRYPOINT ["python3"] 
+CMD ["manage.py", "runserver", "0.0.0.0:8000"]
+
 FROM builder as dev-envs
 RUN <<EOF
 apk update
