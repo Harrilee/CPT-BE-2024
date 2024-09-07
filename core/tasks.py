@@ -10,10 +10,12 @@ import json
 from core.models import WebUser, Log, BannedLog
 from datetime import datetime
 from core.services import blued_msg
+from core.utility import catch_exceptions
 
 with open("core/scheduled_tasks.json") as f:
     tasks = json.load(f)
 
+@catch_exceptions
 def launch_tasks(time: int):
     print(f"Event triggered at {datetime.now()}, with time {time}.")
     log = Log.objects.create(
@@ -21,7 +23,7 @@ def launch_tasks(time: int):
         log=f"Event triggered at {datetime.now()}, with time {time}."
     )
     log.save()
-    
+
     sub_tasks = filter(lambda x: x["time"] == str(time), tasks)
     for sub_task in sub_tasks:
         for user in WebUser.objects.all():
@@ -35,7 +37,7 @@ def launch_tasks(time: int):
             if currentDay not in sub_task['days']:
                 continue
             # check criteria
-            if 'not_banned' in sub_task['criteria'] and not user.banFlag:
+            if 'not_banned' in sub_task['criteria'] and not banTags:
                 if 'task_not_done' in sub_task['criteria']:
                     if user.currentDay >= currentDay:
                         continue
@@ -59,12 +61,15 @@ def launch_tasks(time: int):
                     user.surveyCompleteNotified = True
                     user.save()
                         
-            elif 'banned' in sub_task["criteria"] and user.banFlag and not user.banNotified:
+            elif 'banned' in sub_task["criteria"] and banTags and not user.banNotified:
                 if not any([x in sub_task["criteria"] for x in banTags]):
                     continue
                 user.banNotified = True
                 user.save()
                 banLog = True
+            
+            else: 
+                continue
                 
             res = blued_msg.send(user.uuid, sub_task["id"])
             if res['code'] == 200:
@@ -83,10 +88,29 @@ def launch_tasks(time: int):
             if banLog:
                     log = BannedLog.objects.create(
                         user=user,
-                        bannedLog=f"{user.phoneNumber} is banned because {banReasons}"
+                        log=f"{banReasons}"
                     )
                     log.save()
+                    
+@catch_exceptions
+def test_tasks(time: int):
+    print(f"Event triggered at {datetime.now()}, with time {time}.")
+    res = blued_msg.send("wKLBbRvD", 1)
+    user = WebUser.objects.filter(uuid="wKLBbRvD").first()
+    if res['code'] == 200:
+        log = Log.objects.create(
+            user=user,
+            log=f"Message sent to {user.uuid} on task 1 successfully."
+        )
+        log.save()
+    else: 
+        log = Log.objects.create(
+            user=user,
+            log=f"Message sent failed. Error message: " + res['msg']
+        )
+        log.save()
     
+
     
 if __name__ == "__main__":
     launch_tasks(8)

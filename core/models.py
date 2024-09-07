@@ -12,7 +12,8 @@ class WebUser(models.Model):
     uuid = models.CharField(null=True, blank=True, max_length=200, help_text="Blued uuid")
     sms = models.CharField(null=True, blank=True, max_length=20)
     phoneNumber = models.CharField(max_length=500, help_text="Encrypted phone number")
-
+    whitelist = models.OneToOneField("Whitelist", on_delete=models.CASCADE, related_name="webUser")
+    
     group = models.TextField(choices=[("Exp1", "Exp1"), ("Exp2", "Exp2"), ("Waitlist", "Waitlist")], default="Null")
     currentDay = models.FloatField(default=1, help_text="User task progress - note that this number might be a float")
     startDate = models.DateField(default=timezone.now, help_text="Experiment start date")
@@ -78,7 +79,7 @@ class WebUser(models.Model):
     survey99IsValid = models.TextField(choices=[("True", "True"), ("False", "False"), ("Null", "Null")], default="Null", help_text="Inherited from qualtrics survey")
     
     def __str__(self):
-        return f'{self.phoneNumber} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
+        return f'{self.uuid} | {self.group} | startDate: {self.startDate} | currentDay: {self.currentDay}'
 
     def reset_game(self): 
         self.game = None
@@ -95,6 +96,7 @@ class WebUser(models.Model):
             setattr(self, day_attr, "True")
         else:
             setattr(self, day_attr, "Null")
+        self.save()
 
     def count_invalid_checks(self, days: list[int]):
         invalid_count = 0
@@ -119,7 +121,7 @@ class WebUser(models.Model):
             for day in [1, 4, 5, 6, 8]:
                 ra_attr = f'writing{day}QualityCheckRA'
                 cs_attr = f'writing{day}QualityCheckCS'
-                self.update_quality_check(f'writingDay{day}QualityCheck', getattr(self, ra_attr), getattr(self, cs_attr))
+                self.update_quality_check(f'writing{day}QualityCheck', getattr(self, ra_attr), getattr(self, cs_attr))
             invalid1 = self.count_invalid_checks([1])
             invalid4to8 = self.count_invalid_checks([4,5,6,8])
             if invalid1 >= 1:
@@ -162,11 +164,11 @@ class Whitelist(models.Model):
     has_add_wechat = models.BooleanField(default=False, help_text="Please set it to true after adding user's wechat")
     survey0 = models.TextField(max_length=30, null=True, blank=True)
     group = models.TextField(choices=[("Exp1", "Exp1"), ("Exp2", "Exp2"), ("Waitlist", "Waitlist")], default=None, null=True, blank=True)
-    startDate = models.DateField(default=timezone.now, null=True, blank=True, help_text="Experiment start date")
+    startDate = models.DateField(null=True, blank=True, help_text="Experiment start date")
     
     def __str__(self):
-        return self.phoneNumber
-
+        return self.uuid
+    
     def assign_group(self):
         if self.has_add_wechat and not self.group:
             rand = random.randint(1, 3)
@@ -175,7 +177,7 @@ class Whitelist(models.Model):
             elif rand == 2:
                 self.group = "Exp2"
             else:
-                self.group == "Waitlist"
+                self.group = "Waitlist"
             self.save()
                 
     
@@ -188,9 +190,11 @@ class Log(models.Model):
     def __str__(self) -> str:
         return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.log}'
 
-class BannedLog(Log):
+class BannedLog(models.Model):
     
-    bannedLog = models.CharField(max_length=500, null=True, blank=True, help_text="Reason for banning user, auto generated")
+    time = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(WebUser, on_delete=models.CASCADE, null=True, blank=True)
+    log = models.TextField()
     
     def __str__(self) -> str:
-        return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.bannedLog}'
+        return f'BannedLog [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.user.uuid} | {self.log}'

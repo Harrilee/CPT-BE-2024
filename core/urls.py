@@ -14,4 +14,5 @@ urlpatterns = [
     path('sms', views.handleSendSMSRequest, name='handleSendSMSRequest'),
     path('login', views.login, name='login'),
     path('qualtrics_submission', views.qualtrics_submission, name='qualtrics_submission'),
+    path('key', views.key, name="key")
 ]

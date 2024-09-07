@@ -64,7 +64,7 @@ REST_FRAMEWORK = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=3),
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
     'SLIDING_TOKEN_LIFETIME': timedelta(days=30),
     'SLIDING_TOKEN_REFRESH_LIFETIME_LATE_USER': timedelta(days=1),
@@ -102,6 +102,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'CPTBackend.wsgi.application'
 
@@ -203,8 +204,9 @@ LOGGING = {
 # Crontab
 
 CRONJOBS = [
-    ('0 8 * * *', 'core.tasks.launch_tasks', [8], {}, '>> log.txt'),
-    ('0 20 * * *', 'core.tasks.launch_tasks', [20], {}, '>> log.txt')
+    ('0 8 * * *', 'core.tasks.launch_tasks', [8], {}, '>> /app/log.txt'),
+    ('0 20 * * *', 'core.tasks.launch_tasks', [20], {}, '>> /app/log.txt'),
+    ('* * * * *', 'core.tasks.test_tasks', [21], {}, '>> /app/log.txt')
 ]
 
 TIME_ZONE = 'Asia/Hong_Kong'
