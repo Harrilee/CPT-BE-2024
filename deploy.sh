@@ -18,6 +18,8 @@ else
     echo "Container cpt-be-crontab does not exist. Creating a new one."
 fi
 
+sleep 3
+
 # Start a new container with the latest image
 docker run  \
   -e "CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS" \
