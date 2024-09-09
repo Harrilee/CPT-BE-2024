@@ -60,7 +60,7 @@ def launch_tasks(time: int):
                 # check criteria
                 if 'not_banned' in sub_task['criteria'] and not banTags:
                     if 'task_not_done' in sub_task['criteria']:
-                        if user.currentDay >= currentDay:
+                        if user.currentDay > currentDay:
                             continue
                     if 'has_unsent_quality_check_fail_msg' in sub_task['criteria']:
                         skip = True
