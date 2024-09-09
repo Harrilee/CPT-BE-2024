@@ -43,7 +43,6 @@ def launch_tasks(time: int):
                     log.save()
                 else: 
                     log = Log.objects.create(
-                        user=user,
                         log=f"Message sent failed. Error message: " + res['msg']
                     )
                     log.save()
