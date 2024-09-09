@@ -209,4 +209,5 @@ CRONJOBS = [
     # ('* * * * *', 'core.tasks.test_tasks', [21], {}, '>> /app/log.txt')
 ]
 
+USE_TZ = True
 TIME_ZONE = 'Asia/Hong_Kong'
