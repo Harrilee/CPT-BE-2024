@@ -12,11 +12,17 @@ from datetime import datetime
 from core.services import blued_msg
 from core.utility import catch_exceptions
 
+import pytz
+from django.utils import timezone
+
+timezone.activate(pytz.timezone('Asia/Hong_Kong'))
+
 with open("core/scheduled_tasks.json") as f:
     tasks = json.load(f)
 
 @catch_exceptions
 def launch_tasks(time: int):
+    print(timezone.get_current_timezone_name())
     print(f"Event triggered at {datetime.now()}, with time {time}.")
     log = Log.objects.create(
         user=None,
@@ -43,7 +49,6 @@ def launch_tasks(time: int):
                     log.save()
                 else: 
                     log = Log.objects.create(
-                        user=user,
                         log=f"Message sent failed. Error message: " + res['msg']
                     )
                     log.save()
@@ -61,7 +66,10 @@ def launch_tasks(time: int):
                 # check criteria
                 if 'not_banned' in sub_task['criteria'] and not banTags:
                     if 'task_not_done' in sub_task['criteria']:
-                        if user.currentDay >= currentDay:
+                        if sub_task['days'] == 1 and user.group == 'Waitlist':
+                            if user.currentDay >= 1.1:
+                                continue
+                        elif user.currentDay >= currentDay+1:
                             continue
                     if 'has_unsent_quality_check_fail_msg' in sub_task['criteria']:
                         skip = True
