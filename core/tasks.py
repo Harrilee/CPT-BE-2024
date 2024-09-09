@@ -12,17 +12,11 @@ from datetime import datetime
 from core.services import blued_msg
 from core.utility import catch_exceptions
 
-import pytz
-from django.utils import timezone
-
-timezone.activate(pytz.timezone('Asia/Hong_Kong'))
-
 with open("core/scheduled_tasks.json") as f:
     tasks = json.load(f)
 
 @catch_exceptions
 def launch_tasks(time: int):
-    print(timezone.get_current_timezone_name())
     print(f"Event triggered at {datetime.now()}, with time {time}.")
     log = Log.objects.create(
         user=None,
