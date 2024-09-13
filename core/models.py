@@ -188,7 +188,7 @@ class Log(models.Model):
     log = models.TextField()
 
     def __str__(self) -> str:
-        return f'Log [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.log}'
+        return f'Log [{self.id}] | {self.log}'
 
 class BannedLog(models.Model):
     
@@ -197,4 +197,4 @@ class BannedLog(models.Model):
     log = models.TextField()
     
     def __str__(self) -> str:
-        return f'BannedLog [{self.id}] | {self.time.strftime("%Y-%m-%d %H:%M")} | {self.user.uuid} | {self.log}'
+        return f'BannedLog [{self.id}] | {self.user.uuid} | {self.log}'
