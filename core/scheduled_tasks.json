@@ -80,14 +80,14 @@
         "id": 11,
         "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [23, 39, 99],
-        "time": ["20"],  
+        "time": "20",  
         "criteria": ["not_banned", "task_not_done"]
     },
     {
         "id": 11,
         "groups": ["Exp1", "Exp2", "Waitlist"],
         "days": [24, 40, 100, 25, 41, 101, 27, 43, 103, 29, 45, 105],
-        "time": ["8"], 
+        "time": "8", 
         "criteria": ["not_banned", "task_not_done"]
     },
     {
