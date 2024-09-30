@@ -196,11 +196,10 @@ def qualtrics_submission(request):
             setattr(webUser, f"survey{day}", responseId)
             setattr(webUser, f"survey{day}IsValid", isvalid)
             if day == 1:
-                currentDay = 1.1
-            elif day == 23:
-                currentDay = 39
-            elif day == 99:
-                currentDay = 100
+                if webUser.group == "Waitlist": currentDay = 23
+                else: currentDay = 1.1
+            elif day == 23: currentDay = 39
+            elif day == 99: currentDay = 100
             webUser.currentDay = max(webUser.currentDay, currentDay)
             webUser.save()
         except WebUser.DoesNotExist:
