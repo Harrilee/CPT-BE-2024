@@ -104,17 +104,29 @@ class WebUser(models.Model):
             if getattr(self, f'writing{day}QualityCheck') == "False":
                 invalid_count += 1
         return invalid_count
+    
+    def update_date_after_survey_due(self):
+        startDate = datetime.combine(self.startDate, datetime.min.time()).date() 
+        now = datetime.now().date()
+        survey_days = {23: 39, 39: 99, 99: 100}
+        for day, next_day in survey_days.items():
+            if (now - startDate).days > day + 6 and self.currentDay == day:
+                setattr(self, f'survey{day}IsValid', "False")
+                setattr(self, f'survey{day}', "Overdue")
+                self.currentDay = next_day
+
+        self.save()
         
     def validity_check(self):
         banReasons = []
         banTags = []
-        
         # Criteria 1: Qualtrics Survey
+        self.update_date_after_survey_due()
         if self.survey1IsValid == "False":
             banReasons.append("前测问卷无效")
             banTags.append("pre_survey_invalid")
         if self.survey23IsValid == "False" and self.survey39IsValid == "False" and self.survey99IsValid == "False":
-            banReasons.append("后侧问卷无效")
+            banReasons.append("后测问卷无效")
             banTags.append("post_survey_invalid")
         if self.group in ["Exp1", "Exp2"]:
             # Criteria 2: Writing Quality

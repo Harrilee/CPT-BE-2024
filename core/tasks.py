@@ -65,6 +65,9 @@ def launch_tasks(time: int):
                                 continue
                         elif user.currentDay >= currentDay+1:
                             continue
+                    if 'survey_not_done' in sub_task['criteria']:
+                        if user.currentDay >= currentDay - 6:
+                            continue
                     if 'has_unsent_quality_check_fail_msg' in sub_task['criteria']:
                         skip = True
                         for day in [1,4,5,6,8]:
@@ -94,7 +97,7 @@ def launch_tasks(time: int):
                 
                 else: 
                     continue
-                    
+                
                 res = blued_msg.send(user.uuid, sub_task["id"])
                 if res['code'] == 200:
                     log = Log.objects.create(
