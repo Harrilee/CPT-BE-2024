@@ -199,6 +199,7 @@ def qualtrics_submission(request):
                 if webUser.group == "Waitlist": currentDay = 23
                 else: currentDay = 1.1
             elif day == 23: currentDay = 39
+            elif day == 39: currentDay = 99
             elif day == 99: currentDay = 100
             webUser.currentDay = max(webUser.currentDay, currentDay)
             webUser.save()
