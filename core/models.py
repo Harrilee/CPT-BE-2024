@@ -24,6 +24,7 @@ class WebUser(models.Model):
     banReason = models.TextField(max_length=200, null=True, blank=True, help_text="Reason for banning user, visible to user")
     banReasonInternal = models.TextField(max_length=500, null=True, blank=True, help_text="Reason for banning user, auto generated")
     banNotified = models.BooleanField(default=False, help_text="Auto set to true when user is notified")
+    banDay = models.FloatField(default=-1, help_text="The task progress when the user is banned at")
 
     writing1 = models.JSONField(default=dict, null=True, blank=True)
     writing1QualityCheck = models.TextField(choices=[("True", "True"), ("False", "False"), ("Null", "Null")], default="Null", help_text="Auto generated quality check")
@@ -160,10 +161,13 @@ class WebUser(models.Model):
             
         if len(banReasons) > 0:
             self.banReasonInternal = '；'.join(banReasons) + f'[{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}]'
-            self.banFlag = True
+            if not self.banFlag:
+                self.banFlag = True
+                self.banDay = self.currentDay
         else:
             self.banReasonInternal = ''
             self.banFlag = False
+            self.banDay = -1
 
         self.save()
         return banReasons, banTags
